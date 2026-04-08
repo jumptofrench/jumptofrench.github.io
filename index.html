@@ -614,6 +614,9 @@ async function submitPassword(){
     localStorage.removeItem(STORAGE_KEY);
   }
 
+  // ✅ THIS IS THE KEY LINE YOU ASKED FOR
+  localStorage.setItem(`jtf_book${selectedBook}_${pendingMode}`, "yes");
+
   refreshSaved();
   window.location.href = getDestination(selectedBook, pendingMode);
 }
