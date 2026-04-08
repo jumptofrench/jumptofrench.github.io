@@ -615,9 +615,10 @@ async function submitPassword(){
   }
   
 sessionStorage.setItem(`jtf_book${selectedBook}_${pendingMode}`, "yes");
-setTimeout(() => {
+
+  refreshSaved();
   window.location.href = getDestination(selectedBook, pendingMode);
-}, 50);
+}
 
 /* Disable right click, dragging, and text selection */
 document.addEventListener("contextmenu", function(e) {
