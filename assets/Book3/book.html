@@ -1,20 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-(function () {
-  const ok =
-    sessionStorage.getItem("jtf_book3_book") === "yes" ||
-    sessionStorage.getItem("jtf_book3_both") === "yes";
-
-  if (!ok) {
-    document.addEventListener("DOMContentLoaded", function () {
-      document.body.innerHTML = "<div style='font-family:Arial,sans-serif;padding:30px;text-align:center;'>Access denied. Please return to the home page and open the book again.</div>";
-    });
-    throw new Error("Access denied");
-  }
-})();
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Page Viewer</title>
