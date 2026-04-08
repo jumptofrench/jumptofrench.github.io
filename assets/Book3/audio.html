@@ -4,8 +4,8 @@
 <script>
 (function () {
   const ok =
-    sessionStorage.getItem("jtf_book3_audio") === "yes" ||
-    sessionStorage.getItem("jtf_book3_both") === "yes";
+    localStorage.getItem("jtf_book3_audio") === "yes" ||
+    localStorage.getItem("jtf_book3_both") === "yes";
 
   if (!ok) {
     window.location.replace("/index.html");

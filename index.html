@@ -614,6 +614,16 @@ async function submitPassword(){
     localStorage.removeItem(STORAGE_KEY);
   }
   
+const accessKey = `jtf_book${selectedBook}_${pendingMode}`;
+sessionStorage.setItem(accessKey, "yes");
+
+refreshSaved();
+
+if (sessionStorage.getItem(accessKey) === "yes") {
+  window.location.assign(getDestination(selectedBook, pendingMode));
+} else {
+  errorBox.textContent = "Access session could not be created. Please try again.";
+}
 
 /* Disable right click, dragging, and text selection */
 document.addEventListener("contextmenu", function(e) {

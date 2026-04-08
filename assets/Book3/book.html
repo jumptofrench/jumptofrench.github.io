@@ -8,7 +8,10 @@
     sessionStorage.getItem("jtf_book3_both") === "yes";
 
   if (!ok) {
-    window.location.replace("/index.html");
+    document.addEventListener("DOMContentLoaded", function () {
+      document.body.innerHTML = "<div style='font-family:Arial,sans-serif;padding:30px;text-align:center;'>Access denied. Please return to the home page and open the book again.</div>";
+    });
+    throw new Error("Access denied");
   }
 })();
 </script>
