@@ -418,23 +418,23 @@ audio{
       <div class="access-title">Choose Your Access</div>
       <div class="access-sub">The selected book will open in the access type you choose below.</div>
 
-      <button class="option both" data-mode="both" type="button">
+      <button class="option both" data-mode="both">
         Book + Audio
         <small>Open the selected book with audio</small>
       </button>
 
-      <button class="option audio" data-mode="audio" type="button">
+      <button class="option audio" data-mode="audio">
         Audio Only
         <small>Open the selected book audio only</small>
       </button>
 
-      <button class="option book-only" data-mode="book" type="button">
+      <button class="option book-only" data-mode="book">
         Book Only
         <small>Open the selected book</small>
       </button>
 
       <div class="saved" id="savedStatus">No password saved on this device.</div>
-      <button class="small-btn" id="clearSaved" type="button">Clear Saved Password</button>
+      <button class="small-btn" id="clearSaved">Clear Saved Password</button>
 
       <div class="note">After password check, the page opens the book you selected. The same access type works for all 5 books.</div>
     </div>
@@ -452,8 +452,8 @@ audio{
       Remember password on this device
     </label>
     <div class="actions">
-      <button class="cancel" id="cancelBtn" type="button">Cancel</button>
-      <button class="submit" id="submitBtn" type="button">Enter</button>
+      <button class="cancel" id="cancelBtn">Cancel</button>
+      <button class="submit" id="submitBtn">Enter</button>
     </div>
   </div>
 </div>
@@ -535,7 +535,6 @@ document.querySelectorAll(".option").forEach(btn => {
     const savedHash = localStorage.getItem(STORAGE_KEY);
 
     if(savedHash && savedHash === PASSWORD_HASHES[pendingMode]){
-      localStorage.setItem(`jtf_book${selectedBook}_${pendingMode}`, "yes");
       window.location.href = getDestination(selectedBook, pendingMode);
       return;
     }
@@ -614,8 +613,6 @@ async function submitPassword(){
   }else{
     localStorage.removeItem(STORAGE_KEY);
   }
-
-  localStorage.setItem(`jtf_book${selectedBook}_${pendingMode}`, "yes");
 
   refreshSaved();
   window.location.href = getDestination(selectedBook, pendingMode);
