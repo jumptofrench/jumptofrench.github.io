@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jump to French Français</title>
+<style>
+:root{
+  --bg1:#6b63e6;
+  --bg2:#4d90f5;
+  --panel:rgba(255,255,255,.12);
+  --panel-strong:rgba(255,255,255,.16);
+  --line:rgba(255,255,255,.18);
+  --text:#ffffff;
+  --muted:rgba(255,255,255,.9);
+  --shadow:0 18px 40px rgba(0,0,0,.18);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.12) 0 2px, transparent 3px) 0 0/46px 46px,
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+}
+.wrap{
+  max-width:1380px;
+  margin:0 auto;
+  padding:18px 18px 24px;
+}
+.hero{
+  text-align:center;
+  margin-bottom:16px;
+}
+.hero h1{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(40px,5vw,72px);
+  line-height:1;
+  text-shadow:
+    -2px -2px 0 rgba(0,0,0,.45),
+     2px -2px 0 rgba(0,0,0,.45),
+    -2px  2px 0 rgba(0,0,0,.45),
+     2px  2px 0 rgba(0,0,0,.45),
+     0 6px 18px rgba(0,0,0,.18);
+}
+.hero .red{color:#ff4a3c}
+.subtitle{
+  margin:8px 0 6px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(18px,2vw,32px);
+  color:var(--muted);
+}
+.credit{
+  margin:0;
+  font-size:15px;
+  line-height:1.35;
+  color:rgba(255,255,255,.9);
+}
+.main{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 330px;
+  gap:18px;
+  align-items:start;
+}
+.panel{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:26px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(10px);
+}
+.left{
+  padding:18px;
+}
+.right{
+  padding:18px;
+}
+.intro-card{
+  background:var(--panel-strong);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:22px;
+  padding:18px;
+}
+.intro-top{
+  text-align:center;
+  font-size:14px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-weight:700;
+  color:rgba(255,255,255,.9);
+  margin-bottom:14px;
+}
+.intro-grid{
+  display:grid;
+  grid-template-columns:88px 1fr;
+  gap:18px;
+  align-items:start;
+}
+.play-btn{
+  width:88px;
+  height:88px;
+  border:none;
+  border-radius:50%;
+  background:#fff;
+  cursor:pointer;
+  position:relative;
+  box-shadow:0 12px 26px rgba(0,0,0,.18);
+  margin-top:6px;
+}
+.play-btn:hover{transform:scale(1.03)}
+.play-btn .icon{
+  position:absolute;
+  left:35px;
+  top:29px;
+  width:0;
+  height:0;
+  border-top:15px solid transparent;
+  border-bottom:15px solid transparent;
+  border-left:23px solid #5f57df;
+}
+.play-btn.playing .icon{
+  width:18px;
+  height:28px;
+  left:35px;
+  top:30px;
+  border:none;
+  background:linear-gradient(to right,#5f57df 0 7px,transparent 7px 11px,#5f57df 11px 18px);
+}
+.intro-text p{
+  margin:0 0 8px;
+  font-size:15px;
+  line-height:1.45;
+  color:rgba(255,255,255,.95);
+}
+.intro-note{
+  margin-top:8px;
+  font-size:14px;
+  color:#fff;
+  font-weight:700;
+}
+audio{
+  width:100%;
+  margin-top:10px;
+  height:38px;
+}
+.section-title{
+  margin:18px 0 6px;
+  font-size:20px;
+  font-weight:700;
+}
+.section-sub{
+  margin:0 0 12px;
+  font-size:14px;
+  color:rgba(255,255,255,.86);
+}
+.books{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px;
+}
+.book{
+  border-radius:18px;
+  overflow:hidden;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 10px 22px rgba(0,0,0,.14);
+  cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  position:relative;
+}
+.book:hover{
+  transform:translateY(-3px);
+}
+.book.selected{
+  border:3px solid #fff;
+  box-shadow:0 0 0 3px rgba(255,255,255,.25), 0 14px 28px rgba(0,0,0,.22);
+  transform:translateY(-2px);
+}
+.book.selected::after{
+  content:"Selected";
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#fff;
+  color:#3f3f3f;
+  font-size:11px;
+  font-weight:700;
+  padding:4px 8px;
+  border-radius:999px;
+}
+.book img{
+  display:block;
+  width:100%;
+  height:250px;
+  object-fit:contain;
+  background:#fff;
+  -webkit-user-drag:none;
+  user-select:none;
+}
+.book-label{
+  padding:10px 8px;
+  text-align:center;
+  font-weight:700;
+  font-size:14px;
+  background:rgba(30,20,80,.35);
+}
+.access-title{
+  margin:0 0 8px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:24px;
+}
+.access-sub{
+  margin:0 0 14px;
+  font-size:14px;
+  color:rgba(255,255,255,.9);
+}
+.option{
+  width:100%;
+  border:none;
+  border-radius:18px;
+  padding:15px 15px;
+  margin:0 0 12px;
+  color:#fff;
+  font-size:17px;
+  font-weight:700;
+  text-align:left;
+  cursor:pointer;
+  box-shadow:0 12px 22px rgba(0,0,0,.14);
+}
+.option small{
+  display:block;
+  margin-top:5px;
+  font-size:13px;
+  font-weight:400;
+  opacity:.95;
+}
+.both{background:linear-gradient(135deg,#38a2ff,#55b8ff)}
+.audio{background:linear-gradient(135deg,#f0a42f,#ffc04e)}
+.book-only{background:linear-gradient(135deg,#40b552,#62cf71)}
+.saved{
+  padding:12px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  font-size:14px;
+  color:rgba(255,255,255,.88);
+  margin-top:2px;
+}
+.small-btn{
+  width:100%;
+  border:none;
+  border-radius:14px;
+  padding:11px 12px;
+  margin-top:10px;
+  cursor:pointer;
+  background:rgba(255,255,255,.14);
+  color:#fff;
+  font-size:14px;
+}
+.note{
+  margin-top:14px;
+  font-size:13px;
+  color:rgba(255,255,255,.82);
+}
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  align-items:center;
+  justify-content:center;
+  background:rgba(10,10,35,.5);
+  padding:16px;
+}
+.modal.show{display:flex}
+.modal-box{
+  width:min(420px,96vw);
+  background:#fff;
+  color:#222;
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 20px 42px rgba(0,0,0,.24);
+}
+.modal-box h3{
+  margin:0 0 8px;
+  font-size:28px;
+}
+.modal-box p{
+  margin:0 0 12px;
+  color:#555;
+}
+.field{
+  width:100%;
+  border:1px solid #ddd;
+  border-radius:14px;
+  padding:14px;
+  font-size:16px;
+  margin-bottom:12px;
+}
+.remember{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-bottom:14px;
+  font-size:15px;
+}
+.error{
+  min-height:18px;
+  color:#c62828;
+  font-size:14px;
+  margin-bottom:8px;
+}
+.actions{
+  display:flex;
+  gap:10px;
+}
+.actions button{
+  flex:1;
+  border:none;
+  border-radius:12px;
+  padding:12px 14px;
+  cursor:pointer;
+  font-size:16px;
+}
+.cancel{background:#eee}
+.submit{background:#4c8cf0;color:#fff;font-weight:700}
+
+@media (max-width: 1200px){
+  .books{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+@media (max-width: 980px){
+  .main{
+    grid-template-columns:1fr;
+  }
+  .intro-grid{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+  .intro-text{
+    text-align:center;
+  }
+  .books{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media (max-width: 640px){
+  .books{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>Jump to French <span class="red">Français</span></h1>
+    <div class="subtitle">A Creative Way to Learn French by English</div>
+    <p class="credit"><strong>Written by Iris Melamed</strong><br>Illustrated by Shazeb Khan</p>
+  </div>
+
+  <div class="main">
+    <div class="panel left">
+      <div class="intro-card">
+        <div class="intro-top">Introduction</div>
+        <div class="intro-grid">
+          <button class="play-btn" id="playBtn" aria-label="Play introduction">
+            <span class="icon"></span>
+          </button>
+
+          <div class="intro-text">
+            <p><strong>Jump to French Français</strong> is using English, the already mastered language, as a springboard for acquiring French, the new language.</p>
+            <p>It is a series of 5 books, English to French, each on a different topic.</p>
+            <p>600 new words and expressions in French are learnt in an original creative method based on linguistic principles.</p>
+            <p>Learn French by English in 75 bilingual rhyming poems.</p>
+            <p>Practice is included for a quick and better French immersion.</p>
+            <p>French to English glossary is included for more information.</p>
+            <p>Voice-over is included for right pronunciation.</p>
+            <div class="intro-note" id="audioText">Press play to hear the introduction</div>
+          </div>
+        </div>
+
+        <audio id="audio" controls>
+          <source src="intro.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+
+      <div class="section-title">Book Series Preview</div>
+      <div class="section-sub">Select a book first, then choose the access type on the right.</div>
+
+      <div class="books">
+        <div class="book" data-book="1">
+          <img src="assets/book1.webp" alt="Book 1">
+          <div class="book-label">Book 1</div>
+        </div>
+        <div class="book" data-book="2">
+          <img src="assets/book2.webp" alt="Book 2">
+          <div class="book-label">Book 2</div>
+        </div>
+        <div class="book" data-book="3">
+          <img src="assets/book3.webp" alt="Book 3">
+          <div class="book-label">Book 3</div>
+        </div>
+        <div class="book" data-book="4">
+          <img src="assets/book4.webp" alt="Book 4">
+          <div class="book-label">Book 4</div>
+        </div>
+        <div class="book" data-book="5">
+          <img src="assets/book5.webp" alt="Book 5">
+          <div class="book-label">Book 5</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel right">
+      <div class="access-title">Choose Your Access</div>
+      <div class="access-sub">The selected book will open in the access type you choose below.</div>
+
+      <button class="option both" data-mode="both">
+        Book + Audio
+        <small>Open the selected book with audio</small>
+      </button>
+
+      <button class="option audio" data-mode="audio">
+        Audio Only
+        <small>Open the selected book audio only</small>
+      </button>
+
+      <button class="option book-only" data-mode="book">
+        Book Only
+        <small>Open the selected book</small>
+      </button>
+
+      <div class="saved" id="savedStatus">No password saved on this device.</div>
+      <button class="small-btn" id="clearSaved">Clear Saved Password</button>
+
+      <div class="note">After password check, the page opens the book you selected. The same access type works for all 5 books.</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h3 id="modalTitle">Enter Password</h3>
+    <p>Please enter the password for this access type.</p>
+    <div class="error" id="errorBox"></div>
+    <input class="field" id="password" type="password" placeholder="Password">
+    <label class="remember">
+      <input type="checkbox" id="rememberCheck" checked>
+      Remember password on this device
+    </label>
+    <div class="actions">
+      <button class="cancel" id="cancelBtn">Cancel</button>
+      <button class="submit" id="submitBtn">Enter</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const PASSWORD_HASHES = {
+  book: "9b93296600e482dd6790c217e49981293bfb3ad5a6e5073f2a4ca004bc16d242",
+  audio: "5a36025e36bd2b34816f21fa4c9452af8e256348a5d50f8f67f2f7313be81d24",
+  both: "59bb942dd46ba5eda9c99993d53b491ee5289b9e7ae396fb4c8eecdd8af3d79c"
+};
+
+const STORAGE_KEY = "jump_to_french_saved_password_hash";
+
+let selectedBook = null;
+let pendingMode = null;
+
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("playBtn");
+const audioText = document.getElementById("audioText");
+const modal = document.getElementById("modal");
+const passwordInput = document.getElementById("password");
+const rememberCheck = document.getElementById("rememberCheck");
+const savedStatus = document.getElementById("savedStatus");
+const errorBox = document.getElementById("errorBox");
+const modalTitle = document.getElementById("modalTitle");
+
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+function updatePlayUI(){
+  const playing = !audio.paused;
+  playBtn.classList.toggle("playing", playing);
+  audioText.textContent = playing ? "Introduction is playing" : "Press play to hear the introduction";
+}
+
+playBtn.addEventListener("click", async () => {
+  try{
+    if(audio.paused){
+      await audio.play();
+    }else{
+      audio.pause();
+    }
+  }catch(e){}
+  updatePlayUI();
+});
+
+audio.addEventListener("play", updatePlayUI);
+audio.addEventListener("pause", updatePlayUI);
+
+window.addEventListener("load", () => {
+  audio.pause();
+  updatePlayUI();
+  refreshSaved();
+});
+
+document.querySelectorAll(".book").forEach(book => {
+  book.addEventListener("click", () => {
+    selectedBook = book.dataset.book;
+    document.querySelectorAll(".book").forEach(b => b.classList.remove("selected"));
+    book.classList.add("selected");
+  });
+});
+
+document.querySelectorAll(".option").forEach(btn => {
+  btn.addEventListener("click", () => {
+    if(!selectedBook){
+      errorBox.textContent = "Please select a book first.";
+      modalTitle.textContent = "Select a Book First";
+      modal.classList.add("show");
+      return;
+    }
+
+    pendingMode = btn.dataset.mode;
+    const savedHash = localStorage.getItem(STORAGE_KEY);
+
+    if(savedHash && savedHash === PASSWORD_HASHES[pendingMode]){
+      window.location.href = getDestination(selectedBook, pendingMode);
+      return;
+    }
+
+    errorBox.textContent = "";
+    modalTitle.textContent =
+      pendingMode === "book" ? "Book Only Access" :
+      pendingMode === "audio" ? "Audio Only Access" :
+      "Book + Audio Access";
+
+    passwordInput.value = "";
+    modal.classList.add("show");
+    passwordInput.focus();
+  });
+});
+
+function getDestination(bookNumber, mode){
+  if(mode === "book"){
+    return `assets/Book${bookNumber}/book.html`;
+  }
+  if(mode === "audio"){
+    return `assets/Book${bookNumber}/audio.html`;
+  }
+  return `assets/Book${bookNumber}/book_audio.html`;
+}
+
+function refreshSaved(){
+  const savedHash = localStorage.getItem(STORAGE_KEY);
+  if(savedHash){
+    savedStatus.textContent = "Saved password found on this device.";
+  }else{
+    savedStatus.textContent = "No password saved on this device.";
+  }
+}
+
+document.getElementById("clearSaved").addEventListener("click", () => {
+  localStorage.removeItem(STORAGE_KEY);
+  refreshSaved();
+});
+
+document.getElementById("cancelBtn").addEventListener("click", () => {
+  modal.classList.remove("show");
+  passwordInput.value = "";
+  errorBox.textContent = "";
+});
+
+modal.addEventListener("click", (e) => {
+  if(e.target === modal){
+    modal.classList.remove("show");
+    passwordInput.value = "";
+    errorBox.textContent = "";
+  }
+});
+
+document.getElementById("submitBtn").addEventListener("click", submitPassword);
+passwordInput.addEventListener("keydown", (e) => {
+  if(e.key === "Enter") submitPassword();
+});
+
+async function submitPassword(){
+  if(!selectedBook){
+    errorBox.textContent = "Please select a book first.";
+    return;
+  }
+
+  const pass = passwordInput.value.trim();
+  const hashed = await hashPassword(pass);
+
+  if(hashed !== PASSWORD_HASHES[pendingMode]){
+    errorBox.textContent = "Wrong password.";
+    return;
+  }
+
+  if(rememberCheck.checked){
+    localStorage.setItem(STORAGE_KEY, hashed);
+  }else{
+    localStorage.removeItem(STORAGE_KEY);
+  }
+  
+sessionStorage.setItem(`jtf_book${selectedBook}_${pendingMode}`, "yes");
+
+  refreshSaved();
+  window.location.href = getDestination(selectedBook, pendingMode);
+}
+
+/* Disable right click, dragging, and text selection */
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault();
+});
+
+document.addEventListener("dragstart", function(e) {
+  e.preventDefault();
+});
+
+document.addEventListener("selectstart", function(e) {
+  e.preventDefault();
+});
+
+/* Block some common shortcuts */
+document.addEventListener("keydown", function(e) {
+  const key = e.key.toUpperCase();
+  if (
+    e.key === "F12" ||
+    (e.ctrlKey && e.shiftKey && ["I","J","C"].includes(key)) ||
+    (e.ctrlKey && ["U","S","P"].includes(key))
+  ) {
+    e.preventDefault();
+  }
+});
+</script>
+</body>
+</html>

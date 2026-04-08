@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function () {
+  const ok =
+    sessionStorage.getItem("jtf_book5_audio") === "yes" ||
+    sessionStorage.getItem("jtf_book5_both") === "yes";
+
+  if (!ok) {
+    window.location.replace("/index.html");
+  }
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jump to French - Reader</title>
+<style>
+* { box-sizing: border-box; }
+
+:root {
+  --left-col: 320px;
+  --chapters-col: 280px;
+  --divider: 10px;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #e7e7e7;
+  color: #111;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body {
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+}
+
+img,
+button,
+input,
+audio {
+  -webkit-user-drag: none;
+}
+
+.app {
+  align-items: stretch;
+  display: grid;
+  grid-template-columns:
+    minmax(260px, var(--left-col))
+    var(--divider)
+    minmax(240px, var(--chapters-col));
+  justify-content: center;
+  align-content: center;
+  gap: 0;
+  height: 100vh;
+  width: min(100%, 920px);
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+/* LEFT PANEL */
+.left {
+  background: #f5f5f5;
+  border-right: 1px solid #d0d0d0;
+  padding: 14px;
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 12px;
+}
+
+.top-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.cover-wrap {
+  background: #fff;
+  border: 1px solid #d6d6d6;
+  border-radius: 20px;
+  padding: 10px;
+  box-shadow: 0 8px 18px rgba(0,0,0,.08);
+  display: flex;
+  justify-content: center;
+}
+
+.cover {
+  width: 100%;
+  max-width: 100%;
+  max-height: 380px;
+  display: block;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.14);
+  pointer-events: none;
+}
+
+.title {
+  font-size: clamp(22px, 1.6vw, 28px);
+  font-weight: 700;
+  line-height: 1.05;
+  text-align: center;
+}
+
+.sub {
+  margin-top: 6px;
+  color: #555;
+  font-size: clamp(14px, 0.95vw, 17px);
+  text-align: center;
+}
+
+/* NAV */
+.nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.nav button {
+  padding: 12px 10px;
+  font-size: clamp(13px, 0.9vw, 15px);
+  font-weight: 700;
+  border-radius: 14px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+
+.nav button:hover,
+.player-btn:hover,
+.speed-btn:hover,
+.chapter:hover,
+.extra-page:hover,
+.volume-icon:hover,
+.theme-btn:hover,
+.side-page-btn:hover {
+  background: #efefef;
+}
+
+/* PLAYER */
+.player {
+  background: #fff;
+  border: 1px solid #d1d1d1;
+  border-radius: 18px;
+  padding: 14px;
+  align-self: start;
+}
+
+.player-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.time {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.player-btn {
+  border: 1px solid #c8c8c8;
+  background: #fff;
+  border-radius: 14px;
+  min-width: 54px;
+  height: 46px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.seek-label,
+.volume-label,
+.speed-label,
+.theme-label {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.seek,
+.volume {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.seek {
+  height: 28px;
+  margin-bottom: 10px;
+}
+
+.volume {
+  height: 26px;
+}
+
+.seek::-webkit-slider-runnable-track,
+.volume::-webkit-slider-runnable-track {
+  height: 12px;
+  background: #d9d9d9;
+  border-radius: 999px;
+}
+
+.seek::-moz-range-track,
+.volume::-moz-range-track {
+  height: 12px;
+  background: #d9d9d9;
+  border-radius: 999px;
+}
+
+.seek::-webkit-slider-thumb,
+.volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background: #111;
+  border-radius: 50%;
+  margin-top: -6px;
+  border: 3px solid #fff;
+  box-shadow: 0 1px 5px rgba(0,0,0,.25);
+}
+
+.seek::-moz-range-thumb,
+.volume::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: #111;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 1px 5px rgba(0,0,0,.25);
+}
+
+.volume-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.volume-icon {
+  width: 50px;
+  height: 40px;
+  border: 1px solid #c8c8c8;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.volume-value {
+  font-size: 13px;
+  color: #555;
+  margin-top: 6px;
+}
+
+.speed-wrap {
+  margin-top: 12px;
+}
+
+.speed-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.speed-text {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.speed-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.speed-btn,
+.theme-btn {
+  border: 1px solid #c8c8c8;
+  background: #fff;
+  border-radius: 12px;
+  min-height: 40px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.speed-btn.active,
+.theme-btn.active {
+  background: #e9e9e9;
+  border-color: #b7b7b7;
+}
+
+.theme-wrap {
+  margin-top: 12px;
+}
+
+.theme-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* DIVIDER */
+.divider {
+  background: #dfdfdf;
+}
+
+/* CHAPTER COLUMN */
+.chapter-column {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  background: #f1f1f1;
+  border-right: 1px solid #d0d0d0;
+  padding: 8px 6px 8px 6px;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chapter-head {
+  font-size: clamp(17px, 1.05vw, 20px);
+  font-weight: 700;
+  margin-bottom: 6px;
+  flex-shrink: 0;
+}
+
+.chapters-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 12px;
+  padding-bottom: 10px;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #555;
+  margin: 0 0 8px;
+}
+
+.audio-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.extra-wrap {
+  padding-top: 8px;
+  border-top: 1px solid #d7d7d7;
+  flex-shrink: 0;
+}
+
+.extra-wrap {
+  display: none;
+}
+
+
+
+.chapters {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  grid-auto-rows: minmax(34px, auto);
+  align-content: start;
+}
+
+.extra-pages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  align-content: start;
+}
+
+.chapter,
+.extra-page {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid #c8c8c8;
+  background: #fff;
+  border-radius: 12px;
+  min-height: 40px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 0 10px;
+}
+
+.chapter.active,
+.extra-page.active {
+  background: #e9e9e9;
+  border-color: #b7b7b7;
+}
+
+/* MAIN PAGE */
+.main {
+  display: none !important;
+}
+
+.page-stage {
+  width: 100%;
+  height: 100%;
+  background: #efefef;
+  border-radius: 18px;
+  border: 1px solid #d2d2d2;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 24px;
+  position: relative;
+}
+
+.page-image-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 12px;
+  position: relative;
+}
+
+.page-image-wrap:active {
+  transform: scale(0.998);
+}
+
+.main img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 10px;
+  background: transparent;
+  pointer-events: none;
+}
+
+.page-top-badge,
+.page-badge {
+  position: absolute;
+  left: 18px;
+  background: rgba(255,255,255,0.92);
+  color: #111;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  z-index: 3;
+  border: 1px solid #d4d4d4;
+}
+
+.page-top-badge {
+  top: 18px;
+}
+
+.page-badge {
+  top: 60px;
+}
+
+.tap-hint {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  background: rgba(255,255,255,0.9);
+  color: #111;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid #d4d4d4;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.9;
+  transition: opacity 0.25s ease;
+}
+
+.tap-hint.hidden {
+  opacity: 0;
+}
+
+.side-page-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 96px;
+  border: 1px solid #cfcfcf;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.96);
+  color: #111;
+  font-size: 40px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+}
+
+.side-page-btn.left-btn {
+  left: 22px;
+}
+
+.side-page-btn.right-btn {
+  right: 22px;
+}
+
+.center-status {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: 96px;
+  height: 96px;
+  border-radius: 999px;
+  background: rgba(20,20,20,0.72);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 700;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  backdrop-filter: blur(3px);
+}
+
+.center-status.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* LIGHT MODE PAGE AREA */
+body:not(.dark-mode) .page-stage {
+  background: #efefef;
+}
+
+body:not(.dark-mode) .page-badge,
+body:not(.dark-mode) .page-top-badge {
+  background: rgba(255,255,255,0.92);
+  color: #111;
+  border-color: #d4d4d4;
+}
+
+/* DARK MODE */
+body.dark-mode {
+  background: #121212;
+  color: #eee;
+}
+
+body.dark-mode .left,
+body.dark-mode .chapter-column,
+body.dark-mode .player,
+body.dark-mode .cover-wrap {
+  background: #1e1e1e;
+  border-color: #333;
+}
+
+body.dark-mode .main {
+  background: #151515;
+}
+
+body.dark-mode .divider {
+  background: #2a2a2a;
+}
+
+body.dark-mode .title,
+body.dark-mode .time,
+body.dark-mode .speed-text,
+body.dark-mode .chapter-head,
+body.dark-mode .seek-label,
+body.dark-mode .volume-label,
+body.dark-mode .speed-label,
+body.dark-mode .theme-label {
+  color: #eee;
+}
+
+body.dark-mode .sub,
+body.dark-mode .section-title,
+body.dark-mode .volume-value {
+  color: #bdbdbd;
+}
+
+body.dark-mode .chapter,
+body.dark-mode .extra-page,
+body.dark-mode .player-btn,
+body.dark-mode .speed-btn,
+body.dark-mode .theme-btn,
+body.dark-mode .nav button,
+body.dark-mode .volume-icon,
+body.dark-mode .side-page-btn {
+  background: #2a2a2a;
+  color: #eee;
+  border-color: #444;
+}
+
+body.dark-mode .chapter.active,
+body.dark-mode .extra-page.active,
+body.dark-mode .speed-btn.active,
+body.dark-mode .theme-btn.active {
+  background: #3a3a3a;
+  border-color: #5a5a5a;
+}
+
+body.dark-mode .nav button:hover,
+body.dark-mode .player-btn:hover,
+body.dark-mode .speed-btn:hover,
+body.dark-mode .chapter:hover,
+body.dark-mode .extra-page:hover,
+body.dark-mode .volume-icon:hover,
+body.dark-mode .theme-btn:hover,
+body.dark-mode .side-page-btn:hover {
+  background: #353535;
+}
+
+body.dark-mode .page-stage {
+  background: #101010;
+  border-color: #333;
+}
+
+body.dark-mode .page-top-badge,
+body.dark-mode .page-badge {
+  background: rgba(40,40,40,0.95);
+  color: #f2f2f2;
+  border-color: #555;
+}
+
+body.dark-mode .tap-hint {
+  background: rgba(40,40,40,0.95);
+  color: #f2f2f2;
+  border-color: #555;
+}
+
+body.dark-mode .center-status {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+}
+
+body.dark-mode .main img {
+  background: transparent;
+}
+
+body.dark-mode .seek::-webkit-slider-runnable-track,
+body.dark-mode .volume::-webkit-slider-runnable-track,
+body.dark-mode .seek::-moz-range-track,
+body.dark-mode .volume::-moz-range-track {
+  background: #4a4a4a;
+}
+
+body.dark-mode .seek::-webkit-slider-thumb,
+body.dark-mode .volume::-webkit-slider-thumb {
+  background: #f2f2f2;
+  border: 3px solid #2a2a2a;
+}
+
+body.dark-mode .seek::-moz-range-thumb,
+body.dark-mode .volume::-moz-range-thumb {
+  background: #f2f2f2;
+  border: 3px solid #2a2a2a;
+}
+
+/* TABLET */
+@media (max-width: 1200px) {
+  :root {
+    --left-col: 290px;
+    --chapters-col: 280px;
+  }
+
+  .chapter,
+  .extra-page {
+    font-size: 10px;
+    min-height: 32px;
+    padding: 4px 7px;
+  }
+
+  .side-page-btn {
+    width: 50px;
+    height: 86px;
+    font-size: 34px;
+  }
+}
+
+/* PHONE */
+@media (max-width: 760px) {
+  body {
+    overflow: auto;
+    display: block;
+  }
+
+  .app {
+  align-items: stretch;
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100vh;
+    width: 100%;
+    max-width: none;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .left,
+  .chapter-column {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+    border-right: none;
+    border-bottom: 1px solid #d0d0d0;
+  }
+
+  .chapter-column {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+    padding-top: 12px;
+    height: auto;
+  }
+
+  .chapters-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 12px;
+  padding-bottom: 10px;
+    overflow: visible;
+    height: auto;
+    display: block;
+  }
+
+  .audio-wrap,
+  .extra-wrap {
+    display: block;
+  }
+
+  .chapters,
+  .extra-pages {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cover {
+    max-width: 240px;
+    max-height: none;
+  }
+
+  .main {
+    min-height: 55vh;
+  }
+
+  .page-stage {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .side-page-btn {
+    width: 44px;
+    height: 78px;
+    font-size: 30px;
+  }
+
+  .side-page-btn.left-btn {
+    left: 12px;
+  }
+
+  .side-page-btn.right-btn {
+    right: 12px;
+  }
+}
+
+/* SMALL PHONE */
+@media (max-width: 520px) {
+  .nav,
+  .speed-buttons,
+  .extra-pages {
+    grid-template-columns: 1fr;
+  }
+
+  .theme-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter,
+  .extra-page {
+    min-height: 42px;
+    font-size: 13px;
+  }
+
+  .chapters {
+    grid-template-columns: 1fr;
+  }
+
+  .main {
+    min-height: 48vh;
+  }
+
+  .page-badge,
+  .page-top-badge,
+  .tap-hint {
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+
+  .page-badge {
+    top: 54px;
+  }
+
+  .side-page-btn {
+    width: 40px;
+    height: 70px;
+    font-size: 28px;
+  }
+
+  .center-status {
+    width: 82px;
+    height: 82px;
+    font-size: 34px;
+  }
+}
+</style>
+</head>
+<body oncontextmenu="return false;">
+<div class="app" id="app">
+  <aside class="left">
+    <div class="top-info">
+      <div class="cover-wrap">
+        <img src="cover.png" class="cover" alt="Book cover">
+      </div>
+      <div>
+        <div class="title">Jump to French - Book 1</div>
+        <div class="sub">Animals</div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button id="prevBtn" type="button">Previous Chapter</button>
+      <button id="nextBtn" type="button">Next Chapter</button>
+    </div>
+
+    <div class="player">
+      <div class="player-row">
+        <div class="time" id="timeLabel">0:00 / 0:00</div>
+        <button id="playPauseBtn" class="player-btn" type="button">▶</button>
+        <button id="restartBtn" class="player-btn" type="button">↺</button>
+      </div>
+
+      <div class="seek-label">Timeline</div>
+      <input id="seekBar" class="seek" type="range" min="0" max="100" value="0" step="0.1">
+
+      <div class="volume-label">Sound</div>
+      <div class="volume-row">
+        <button id="muteBtn" class="volume-icon" type="button">🔊</button>
+        <input id="volumeBar" class="volume" type="range" min="0" max="1" value="1" step="0.01">
+      </div>
+      <div class="volume-value" id="volumeLabel">100%</div>
+
+      <div class="speed-wrap">
+        <div class="speed-top">
+          <div class="speed-label">Reading speed</div>
+          <div class="speed-text" id="speedText">Normal</div>
+        </div>
+        <div class="speed-buttons">
+          <button id="slowBtn" class="speed-btn" type="button">Slower</button>
+          <button id="normalBtn" class="speed-btn active" type="button">Normal</button>
+          <button id="fastBtn" class="speed-btn" type="button">Faster</button>
+        </div>
+      </div>
+
+      <div class="theme-wrap">
+        <div class="speed-top">
+          <div class="theme-label">Background</div>
+        </div>
+        <div class="theme-buttons">
+          <button id="lightModeBtn" class="theme-btn active" type="button">Light</button>
+          <button id="darkModeBtn" class="theme-btn" type="button">Dark</button>
+        </div>
+      </div>
+
+      <audio id="audio" preload="metadata">
+        <source src="audio.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+  </aside>
+
+  <div class="divider" aria-hidden="true"></div>
+
+  <aside class="chapter-column">
+    <div class="chapter-head">Chapters</div>
+
+    <div class="chapters-scroll">
+      <div class="audio-wrap">
+        <div class="section-title">Audio chapters</div>
+        <div class="chapters" id="chapters"></div>
+      </div>
+
+      <div class="extra-wrap">
+        <div class="section-title">Other pages</div>
+        <div class="extra-pages" id="extraPages"></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-stage">
+      <div class="page-top-badge" id="pageModeLabel">Audio section</div>
+      <div class="page-badge" id="pageNumberLabel">Cover</div>
+      <div class="tap-hint" id="tapHint">Tap page to play / pause</div>
+      <div class="center-status" id="centerStatus">▶</div>
+
+      <button id="leftPageBtn" class="side-page-btn left-btn" type="button" aria-label="Previous chapter">‹</button>
+
+      <div class="page-image-wrap" id="pageImageWrap" title="Tap to play or pause">
+        <img id="page" src="cover.png" alt="Book page">
+      </div>
+
+      <button id="rightPageBtn" class="side-page-btn right-btn" type="button" aria-label="Next chapter">›</button>
+    </div>
+  </main>
+</div>
+
+<script>
+const TOTAL_PAGES = 24;
+
+const chapters = [
+  {title:"Jump to French", start:0, end:12, page:"cover"},
+  {title:"On the traffic light", start:13, end:49, page:3},
+  {title:"Travel to the north", start:50, end:91, page:4},
+  {title:"An accident happened", start:92, end:137, page:5},
+  {title:"Monday", start:138, end:193, page:6},
+  {title:"Thursday", start:194, end:240, page:7},
+  {title:"Exercise *", start:241, end:311, page:8},
+  {title:"Once a man", start:313, end:367, page:9},
+  {title:"I'm listening", start:369, end:401, page:10},
+  {title:"You are very Intelligent", start:402, end:435, page:11},
+  {title:"Water comes from", start:436, end:476, page:12},
+  {title:"The dress is expensive", start:477, end:525, page:13},
+  {title:"Exercise **", start:526, end:581, page:14},
+  {title:"I'm reading in English", start:582, end:630, page:15},
+  {title:"You are so funny", start:631, end:662, page:16},
+  {title:"You should follow", start:663, end:707, page:17},
+  {title:"English my mother language", start:708, end:751, page:18},
+  {title:"Very soon", start:752, end:785, page:19},
+  {title:"Exercise ***", start:786, end:850, page:20},
+];
+
+const extraPages = [
+  {title:"Page 1", page:1},
+  {title:"Page 2", page:2},
+  {title:"Page 21", page:21},
+  {title:"Page 22", page:22},
+  {title:"Page 23", page:23},
+  {title:"Page 24", page:24},
+];
+
+let currentChapterIndex = 0;
+let isDragging = false;
+let lastVolume = 1;
+let currentViewMode = "audio";
+let currentStandalonePage = null;
+let statusTimeout = null;
+
+const audio = document.getElementById("audio");
+const page = document.getElementById("page");
+const pageImageWrap = document.getElementById("pageImageWrap");
+const tapHint = document.getElementById("tapHint");
+const centerStatus = document.getElementById("centerStatus");
+const chaptersWrap = document.getElementById("chapters");
+const extraPagesWrap = document.getElementById("extraPages");
+const timeLabel = document.getElementById("timeLabel");
+const seekBar = document.getElementById("seekBar");
+const playPauseBtn = document.getElementById("playPauseBtn");
+const restartBtn = document.getElementById("restartBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const muteBtn = document.getElementById("muteBtn");
+const volumeBar = document.getElementById("volumeBar");
+const volumeLabel = document.getElementById("volumeLabel");
+const slowBtn = document.getElementById("slowBtn");
+const normalBtn = document.getElementById("normalBtn");
+const fastBtn = document.getElementById("fastBtn");
+const speedText = document.getElementById("speedText");
+const pageNumberLabel = document.getElementById("pageNumberLabel");
+const pageModeLabel = document.getElementById("pageModeLabel");
+const lightModeBtn = document.getElementById("lightModeBtn");
+const darkModeBtn = document.getElementById("darkModeBtn");
+const leftPageBtn = document.getElementById("leftPageBtn");
+const rightPageBtn = document.getElementById("rightPageBtn");
+
+function formatTime(seconds) {
+  if (!isFinite(seconds)) return "0:00";
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return m + ":" + String(s).padStart(2, "0");
+}
+
+function renderTime() {
+  timeLabel.textContent = formatTime(audio.currentTime) + " / " + formatTime(audio.duration);
+}
+
+function renderVolume() {
+  const pct = Math.round(audio.volume * 100);
+  volumeLabel.textContent = pct + "%";
+  muteBtn.textContent = (audio.muted || audio.volume === 0) ? "🔇" : "🔊";
+}
+
+function renderSpeedButtons(active) {
+  [slowBtn, normalBtn, fastBtn].forEach(btn => btn.classList.remove("active"));
+  active.classList.add("active");
+}
+
+function setReadingSpeed(mode) {
+  if (mode === "slow") {
+    audio.playbackRate = 0.75;
+    speedText.textContent = "Slower";
+    renderSpeedButtons(slowBtn);
+  } else if (mode === "fast") {
+    audio.playbackRate = 1.25;
+    speedText.textContent = "Faster";
+    renderSpeedButtons(fastBtn);
+  } else {
+    audio.playbackRate = 1;
+    speedText.textContent = "Normal";
+    renderSpeedButtons(normalBtn);
+  }
+}
+
+function setTheme(mode) {
+  document.body.classList.remove("dark-mode");
+  lightModeBtn.classList.remove("active");
+  darkModeBtn.classList.remove("active");
+
+  if (mode === "dark") {
+    document.body.classList.add("dark-mode");
+    darkModeBtn.classList.add("active");
+  } else {
+    lightModeBtn.classList.add("active");
+  }
+}
+
+function getPageSrc(pageValue) {
+  if (pageValue === "cover") return "cover.png";
+  return "pages/page-" + String(pageValue).padStart(2, "0") + ".jpg";
+}
+
+function updatePageLabels(pageValue) {
+  if (pageValue === "cover") {
+    pageNumberLabel.textContent = "Cover";
+  } else {
+    pageNumberLabel.textContent = "Page " + pageValue + " / " + TOTAL_PAGES;
+  }
+
+  pageModeLabel.textContent = currentViewMode === "audio" ? "Audio section" : "Other page";
+}
+
+function setPage(pageValue) {
+  page.src = "cover.png"; // ALWAYS stay on cover
+  updatePageLabels("cover"); // always show "Cover"
+}
+
+function clearExtraPageActive() {
+  document.querySelectorAll(".extra-page").forEach(el => el.classList.remove("active"));
+}
+
+function clearChapterActive() {
+  document.querySelectorAll(".chapter").forEach(el => el.classList.remove("active"));
+}
+
+function setActiveChapter(index, play = false) {
+  currentViewMode = "audio";
+  currentStandalonePage = null;
+  currentChapterIndex = Math.max(0, Math.min(chapters.length - 1, index));
+  const chapter = chapters[currentChapterIndex];
+
+  setPage(chapter.page);
+  clearExtraPageActive();
+
+  document.querySelectorAll(".chapter").forEach((el, i) => {
+    el.classList.toggle("active", i === currentChapterIndex);
+  });
+
+  if (play) {
+    audio.currentTime = chapter.start;
+    audio.play();
+  }
+}
+
+function setStandalonePage(pageNum) {
+  currentViewMode = "extra";
+  currentStandalonePage = pageNum;
+  setPage(pageNum);
+  audio.pause();
+
+  clearChapterActive();
+
+  document.querySelectorAll(".extra-page").forEach(el => {
+    el.classList.toggle("active", Number(el.dataset.page) === pageNum);
+  });
+}
+
+function chapterIndexForTime(t) {
+  for (let i = 0; i < chapters.length; i++) {
+    const current = chapters[i];
+    const next = chapters[i + 1];
+    if (t >= current.start && (!next || t < next.start)) return i;
+  }
+  return 0;
+}
+
+function showCenterStatus(symbol) {
+  centerStatus.textContent = symbol;
+  centerStatus.classList.add("show");
+  clearTimeout(statusTimeout);
+  statusTimeout = setTimeout(() => {
+    centerStatus.classList.remove("show");
+  }, 650);
+}
+
+function toggleFromPage() {
+  if (currentViewMode !== "audio") {
+    setActiveChapter(currentChapterIndex, false);
+  }
+
+  if (audio.paused) {
+    audio.play();
+    showCenterStatus("▶");
+  } else {
+    audio.pause();
+    showCenterStatus("❚❚");
+  }
+
+  tapHint.classList.add("hidden");
+}
+
+function goToPreviousMainStep(play = true) {
+  tapHint.classList.add("hidden");
+
+  if (currentViewMode === "extra") {
+    const currentIndex = extraPages.findIndex(p => p.page === currentStandalonePage);
+    if (currentIndex > 0) {
+      setStandalonePage(extraPages[currentIndex - 1].page);
+    } else {
+      setActiveChapter(chapters.length - 1, false);
+    }
+    return;
+  }
+
+  setActiveChapter(currentChapterIndex - 1, play);
+}
+
+function goToNextMainStep(play = true) {
+  tapHint.classList.add("hidden");
+
+  if (currentViewMode === "extra") {
+    const currentIndex = extraPages.findIndex(p => p.page === currentStandalonePage);
+    if (currentIndex < extraPages.length - 1) {
+      setStandalonePage(extraPages[currentIndex + 1].page);
+    }
+    return;
+  }
+
+  if (currentChapterIndex < chapters.length - 1) {
+    setActiveChapter(currentChapterIndex + 1, play);
+  } else if (extraPages.length) {
+    setStandalonePage(extraPages[0].page);
+  }
+}
+
+chapters.forEach((chapter, i) => {
+  const div = document.createElement("div");
+  div.className = "chapter";
+
+  let label = chapter.title;
+  if (chapter.page === "cover") {
+    label += " (cover)";
+  } else {
+    label += " (p." + chapter.page + ")";
+  }
+
+  div.textContent = label;
+  div.addEventListener("click", () => setActiveChapter(i, true));
+  chaptersWrap.appendChild(div);
+});
+
+extraPages.forEach(item => {
+  const div = document.createElement("div");
+  div.className = "extra-page";
+  div.textContent = item.title;
+  div.dataset.page = item.page;
+  div.addEventListener("click", () => setStandalonePage(item.page));
+  extraPagesWrap.appendChild(div);
+});
+
+audio.addEventListener("loadedmetadata", () => {
+  seekBar.max = audio.duration || 0;
+  renderTime();
+});
+
+audio.addEventListener("timeupdate", () => {
+  renderTime();
+  if (!isDragging) {
+    seekBar.max = audio.duration || 0;
+    seekBar.value = audio.currentTime;
+  }
+
+  if (currentViewMode !== "audio") return;
+
+  const idx = chapterIndexForTime(audio.currentTime);
+  if (idx !== currentChapterIndex) {
+    setActiveChapter(idx, false);
+  }
+});
+
+audio.addEventListener("play", () => {
+  playPauseBtn.textContent = "❚❚";
+});
+
+audio.addEventListener("pause", () => {
+  playPauseBtn.textContent = "▶";
+});
+
+playPauseBtn.addEventListener("click", () => {
+  if (currentViewMode !== "audio") {
+    setActiveChapter(currentChapterIndex, false);
+  }
+
+  if (audio.paused) {
+    audio.play();
+  } else {
+    audio.pause();
+  }
+});
+
+restartBtn.addEventListener("click", () => {
+  if (currentViewMode !== "audio") {
+    setActiveChapter(currentChapterIndex, false);
+  }
+  audio.currentTime = chapters[currentChapterIndex].start;
+  audio.play();
+});
+
+pageImageWrap.addEventListener("click", toggleFromPage);
+leftPageBtn.addEventListener("click", () => goToPreviousMainStep(true));
+rightPageBtn.addEventListener("click", () => goToNextMainStep(true));
+
+seekBar.addEventListener("input", () => {
+  isDragging = true;
+  timeLabel.textContent = formatTime(Number(seekBar.value)) + " / " + formatTime(audio.duration);
+});
+
+seekBar.addEventListener("change", () => {
+  if (currentViewMode !== "audio") {
+    setActiveChapter(currentChapterIndex, false);
+  }
+  audio.currentTime = Number(seekBar.value);
+  isDragging = false;
+});
+
+volumeBar.addEventListener("input", () => {
+  audio.volume = Number(volumeBar.value);
+  audio.muted = false;
+  lastVolume = audio.volume > 0 ? audio.volume : lastVolume;
+  renderVolume();
+});
+
+muteBtn.addEventListener("click", () => {
+  if (audio.muted || audio.volume === 0) {
+    audio.muted = false;
+    audio.volume = lastVolume > 0 ? lastVolume : 1;
+    volumeBar.value = audio.volume;
+  } else {
+    audio.muted = true;
+  }
+  renderVolume();
+});
+
+slowBtn.addEventListener("click", () => setReadingSpeed("slow"));
+normalBtn.addEventListener("click", () => setReadingSpeed("normal"));
+fastBtn.addEventListener("click", () => setReadingSpeed("fast"));
+
+lightModeBtn.addEventListener("click", () => setTheme("light"));
+darkModeBtn.addEventListener("click", () => setTheme("dark"));
+
+prevBtn.addEventListener("click", () => goToPreviousMainStep(true));
+nextBtn.addEventListener("click", () => goToNextMainStep(true));
+
+document.addEventListener("keydown", (event) => {
+  if (event.target.tagName === "INPUT") return;
+
+  if (event.code === "Space") {
+    event.preventDefault();
+    toggleFromPage();
+  } else if (event.key === "ArrowLeft") {
+    goToPreviousMainStep(true);
+  } else if (event.key === "ArrowRight") {
+    goToNextMainStep(true);
+  }
+});
+
+setActiveChapter(0, false);
+audio.volume = 1;
+volumeBar.value = 1;
+renderVolume();
+setReadingSpeed("normal");
+setTheme("light");
+renderTime();
+
+setTimeout(() => {
+  tapHint.classList.add("hidden");
+}, 3500);
+</script>
+</body>
+</html>
