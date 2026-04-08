@@ -616,8 +616,16 @@ async function submitPassword(){
   
 sessionStorage.setItem(`jtf_book${selectedBook}_${pendingMode}`, "yes");
 
-  refreshSaved();
-  window.location.href = getDestination(selectedBook, pendingMode);
+refreshSaved();
+
+setTimeout(() => {
+  const key = `jtf_book${selectedBook}_${pendingMode}`;
+  if (sessionStorage.getItem(key) === "yes") {
+    window.location.href = getDestination(selectedBook, pendingMode);
+  } else {
+    errorBox.textContent = "Could not save access session. Please try again.";
+  }
+}, 60);
 }
 
 /* Disable right click, dragging, and text selection */
