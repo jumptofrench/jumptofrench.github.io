@@ -4,19 +4,8 @@
 <script>
 (function () {
   const ok =
-    localStorage.getItem("jtf_book2_book") === "yes" ||
-    localStorage.getItem("jtf_book2_both") === "yes";
-
-  if (!ok) {
-    window.location.replace("/index.html");
-  }
-})();
-</script>
-<script>
-(function () {
-  const ok =
-    localStorage.getItem("jtf_book2_book") === "yes" ||
-    localStorage.getItem("jtf_book2_both") === "yes";
+    localStorage.getItem("jtf_book4_book") === "yes" ||
+    localStorage.getItem("jtf_book4_both") === "yes";
 
   if (!ok) {
     window.location.replace("/index.html");
@@ -95,13 +84,14 @@ button {
 
 .page-label {
   position: absolute;
-  top: 20px;
+  top: 14px;
   background: rgba(255,255,255,0.96);
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: 999px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   z-index: 3;
+  white-space: nowrap;
 }
 </style>
 </head>
@@ -144,8 +134,7 @@ function updatePositions() {
   leftBtn.style.left = Math.max(10, leftPos) + "px";
   rightBtn.style.right = Math.max(10, rightPos) + "px";
 
-  // adjusted closer (balanced)
-  const labelLeft = imgRect.left - viewerRect.left - 110;
+  const labelLeft = imgRect.left - viewerRect.left - label.offsetWidth - gap;
   label.style.left = Math.max(10, labelLeft) + "px";
 }
 
@@ -160,6 +149,8 @@ function update() {
     pageEl.src = "pages/page-" + String(current).padStart(2, "0") + ".jpg";
     labelEl.textContent = "Page " + current + " / " + total;
   }
+
+  requestAnimationFrame(updatePositions);
 }
 
 function next() {

@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-(function () {
-  const ok =
-    localStorage.getItem("jtf_book5_both") === "yes";
-  if (!ok) window.location.replace("/index.html");
-})();
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jump to French - Reader</title>
@@ -17,7 +9,7 @@
 
 :root {
   --left-col: 320px;
-  --chapters-col: 235px;
+  --chapters-col: 280px;
   --divider: 10px;
 }
 
@@ -32,7 +24,9 @@ html, body {
 }
 
 body {
-  overflow: hidden;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
 }
 
 img,
@@ -43,14 +37,19 @@ audio {
 }
 
 .app {
+  align-items: stretch;
   display: grid;
   grid-template-columns:
-    minmax(240px, var(--left-col))
+    minmax(260px, var(--left-col))
     var(--divider)
-    minmax(210px, var(--chapters-col))
-    minmax(0, 1fr);
+    minmax(240px, var(--chapters-col));
+  justify-content: center;
+  align-content: center;
+  gap: 0;
   height: 100vh;
-  width: 100%;
+  width: min(100%, 920px);
+  max-width: 920px;
+  margin: 0 auto;
 }
 
 /* LEFT PANEL */
@@ -111,7 +110,7 @@ audio {
 .nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 6px;
 }
 
 .nav button {
@@ -147,7 +146,7 @@ audio {
 .player-row {
   display: grid;
   grid-template-columns: 1fr auto auto;
-  gap: 10px;
+  gap: 6px;
   align-items: center;
   margin-bottom: 12px;
 }
@@ -235,7 +234,7 @@ audio {
 .volume-row {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 10px;
+  gap: 6px;
   align-items: center;
   margin-top: 4px;
 }
@@ -265,8 +264,8 @@ audio {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 8px;
+  gap: 6px;
+  margin-bottom: 6px;
 }
 
 .speed-text {
@@ -314,9 +313,13 @@ audio {
 
 /* CHAPTER COLUMN */
 .chapter-column {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
   background: #f1f1f1;
   border-right: 1px solid #d0d0d0;
-  padding: 10px 8px 10px 8px;
+  padding: 8px 6px 8px 6px;
   min-height: 0;
   height: 100%;
   display: flex;
@@ -327,18 +330,22 @@ audio {
 .chapter-head {
   font-size: clamp(17px, 1.05vw, 20px);
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   flex-shrink: 0;
 }
 
 .chapters-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 12px;
+  padding-bottom: 10px;
   flex: 1;
   min-height: 0;
   height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .section-title {
@@ -361,14 +368,20 @@ audio {
   flex-shrink: 0;
 }
 
+.extra-wrap {
+  display: none;
+}
+
+
+
 .chapters {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  grid-auto-rows: 1fr;
-  align-content: stretch;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  grid-auto-rows: minmax(34px, auto);
+  align-content: start;
 }
 
 .extra-pages {
@@ -380,19 +393,23 @@ audio {
 
 .chapter,
 .extra-page {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border: 1px solid #c8c8c8;
   background: #fff;
   border-radius: 12px;
   min-height: 40px;
   padding: 6px 8px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.1;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 0 10px;
 }
 
 .chapter.active,
@@ -403,13 +420,7 @@ audio {
 
 /* MAIN PAGE */
 .main {
-  background: #dedede;
-  padding: 8px;
-  min-width: 0;
-  min-height: 0;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
+  display: none !important;
 }
 
 .page-stage {
@@ -454,7 +465,7 @@ audio {
 .page-top-badge,
 .page-badge {
   position: absolute;
-  
+  left: 18px;
   background: rgba(255,255,255,0.92);
   color: #111;
   padding: 8px 12px;
@@ -515,11 +526,11 @@ audio {
 }
 
 .side-page-btn.left-btn {
-  left: 0;
+  left: 22px;
 }
 
 .side-page-btn.right-btn {
-  right: 0;
+  right: 22px;
 }
 
 .center-status {
@@ -682,14 +693,14 @@ body.dark-mode .volume::-moz-range-thumb {
 @media (max-width: 1200px) {
   :root {
     --left-col: 290px;
-    --chapters-col: 220px;
+    --chapters-col: 280px;
   }
 
   .chapter,
   .extra-page {
-    font-size: 11px;
-    min-height: 36px;
-    padding: 6px 6px;
+    font-size: 10px;
+    min-height: 32px;
+    padding: 4px 7px;
   }
 
   .side-page-btn {
@@ -703,12 +714,16 @@ body.dark-mode .volume::-moz-range-thumb {
 @media (max-width: 760px) {
   body {
     overflow: auto;
+    display: block;
   }
 
   .app {
+  align-items: stretch;
     grid-template-columns: 1fr;
     height: auto;
     min-height: 100vh;
+    width: 100%;
+    max-width: none;
   }
 
   .divider {
@@ -717,16 +732,28 @@ body.dark-mode .volume::-moz-range-thumb {
 
   .left,
   .chapter-column {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
     border-right: none;
     border-bottom: 1px solid #d0d0d0;
   }
 
   .chapter-column {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
     padding-top: 12px;
     height: auto;
   }
 
   .chapters-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 12px;
+  padding-bottom: 10px;
     overflow: visible;
     height: auto;
     display: block;
@@ -830,8 +857,8 @@ body.dark-mode .volume::-moz-range-thumb {
         <img src="cover.png" class="cover" alt="Book cover">
       </div>
       <div>
-        <div class="title">Jump to French - Book 5</div>
-        <div class="sub">Good to Know</div>
+        <div class="title">Jump to French - Book 4</div>
+        <div class="sub">People</div>
       </div>
     </div>
 
@@ -926,27 +953,34 @@ const TOTAL_PAGES = 24;
 
 const chapters = [
   {title:"Jump to French", start:0, end:12, page:"cover"},
-  {title:"On the traffic light", start:13, end:49, page:3},
-  {title:"Travel to the north", start:50, end:91, page:4},
-  {title:"An accident happened", start:92, end:137, page:5},
-  {title:"Monday", start:138, end:193, page:6},
-  {title:"Thursday", start:194, end:240, page:7},
-  {title:"Exercise *", start:241, end:311, page:8},
-  {title:"Once a man", start:313, end:367, page:9},
-  {title:"I'm listening", start:369, end:401, page:10},
-  {title:"You are very Intelligent", start:402, end:435, page:11},
-  {title:"Water comes from", start:436, end:476, page:12},
-  {title:"The dress is expensive", start:477, end:525, page:13},
-  {title:"Exercise **", start:526, end:581, page:14},
-  {title:"I'm reading in English", start:582, end:630, page:15},
-  {title:"You are so funny", start:631, end:662, page:16},
-  {title:"You should follow", start:663, end:707, page:17},
-  {title:"English my mother language", start:708, end:751, page:18},
-  {title:"Very soon", start:752, end:785, page:19},
-  {title:"Exercise ***", start:786, end:850, page:20},
+  {title:"The door is closed", start:13, end:62, page:3},
+  {title:"I saw my father", start:63, end:94, page:4},
+  {title:"I saw my neighbor", start:95, end:131, page:5},
+  {title:"Sometimes you yell", start:132, end:166, page:6},
+  {title:"I saw my brother", start:167, end:191, page:7},
+  {title:"Exercise *", start:192, end:248, page:8},
+  {title:"Be proud!", start:249, end:295, page:9},
+  {title:"The table is ready", start:296, end:345, page:10},
+  {title:"Celebs are celebrities", start:346, end:383, page:11},
+  {title:"I'm in a bad mood", start:384, end:427, page:12},
+  {title:"On Sunday", start:428, end:473, page:13},
+  {title:"Exercise **", start:474, end:534, page:14},
+  {title:"It's very true", start:535, end:578, page:15},
+  {title:"Help me!", start:579, end:617, page:16},
+  {title:"Goodbye", start:618, end:651, page:17},
+  {title:"I see in your eyes", start:652, end:696, page:18},
+  {title:"Indeed you want", start:697, end:726, page:19},
+  {title:"Exercise ***", start:727, end:785, page:20}
 ];
 
-const extraPages = [{"title":"Page 1","page":1},{"title":"Page 2","page":2},{"title":"Page 21","page":21},{"title":"Page 22","page":22},{"title":"Page 23","page":23},{"title":"Page 24","page":24}];
+const extraPages = [
+  {title:"Page 1", page:1},
+  {title:"Page 2", page:2},
+  {title:"Page 21", page:21},
+  {title:"Page 22", page:22},
+  {title:"Page 23", page:23},
+  {title:"Page 24", page:24}
+];
 
 let currentChapterIndex = 0;
 let isDragging = false;
@@ -1049,9 +1083,8 @@ function updatePageLabels(pageValue) {
 }
 
 function setPage(pageValue) {
-  page.src = getPageSrc(pageValue);
-  updatePageLabels(pageValue);
-  updatePositions();
+  page.src = "cover.png"; // ALWAYS stay on cover
+  updatePageLabels("cover"); // always show "Cover"
 }
 
 function clearExtraPageActive() {
@@ -1304,45 +1337,6 @@ renderTime();
 setTimeout(() => {
   tapHint.classList.add("hidden");
 }, 3500);
-
-function updatePositions() {
-  const viewer = document.querySelector(".page-stage");
-  const wrap = document.getElementById("pageImageWrap");
-  const img = document.getElementById("page");
-  const leftBtn = document.getElementById("leftPageBtn");
-  const rightBtn = document.getElementById("rightPageBtn");
-  const pageLabel = document.getElementById("pageNumberLabel");
-  const modeLabel = document.getElementById("pageModeLabel");
-
-  const viewerRect = viewer.getBoundingClientRect();
-  const wrapRect = wrap.getBoundingClientRect();
-
-  const natW = img.naturalWidth || 1;
-  const natH = img.naturalHeight || 1;
-  const wrapW = wrapRect.width;
-  const wrapH = wrapRect.height;
-  if (!wrapW || !wrapH) return;
-
-  const scale = Math.min(wrapW / natW, wrapH / natH);
-  const displayW = natW * scale;
-
-  const imgLeft = (wrapRect.left - viewerRect.left) + (wrapW - displayW) / 2;
-  const imgRight = imgLeft + displayW;
-
-  const gap = 10;
-
-  leftBtn.style.left = Math.max(10, imgLeft - leftBtn.offsetWidth - gap) + "px";
-  rightBtn.style.right = Math.max(10, viewerRect.width - imgRight - rightBtn.offsetWidth - gap) + "px";
-
-  const labelLeft = Math.max(10, imgLeft - pageLabel.offsetWidth - gap - 30);
-
-  pageLabel.style.left = labelLeft + "px";
-  modeLabel.style.left = labelLeft + "px";
-}
-
-window.addEventListener("resize", updatePositions);
-document.getElementById("page").addEventListener("load", updatePositions);
-
 </script>
 </body>
 </html>

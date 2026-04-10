@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-(function () {
-  const ok =
-    localStorage.getItem("jtf_book5_both") === "yes";
-  if (!ok) window.location.replace("/index.html");
-})();
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jump to French - Reader</title>
@@ -752,7 +744,7 @@ body.dark-mode .volume::-moz-range-thumb {
   }
 
   .page-stage {
-    padding-left: 18px;
+    padding-
     padding-right: 18px;
   }
 
@@ -830,8 +822,8 @@ body.dark-mode .volume::-moz-range-thumb {
         <img src="cover.png" class="cover" alt="Book cover">
       </div>
       <div>
-        <div class="title">Jump to French - Book 5</div>
-        <div class="sub">Good to Know</div>
+        <div class="title">Jump to French - Book 2</div>
+        <div class="sub">Animals</div>
       </div>
     </div>
 
@@ -925,28 +917,35 @@ body.dark-mode .volume::-moz-range-thumb {
 const TOTAL_PAGES = 24;
 
 const chapters = [
-  {title:"Jump to French", start:0, end:12, page:"cover"},
-  {title:"On the traffic light", start:13, end:49, page:3},
-  {title:"Travel to the north", start:50, end:91, page:4},
-  {title:"An accident happened", start:92, end:137, page:5},
-  {title:"Monday", start:138, end:193, page:6},
-  {title:"Thursday", start:194, end:240, page:7},
-  {title:"Exercise *", start:241, end:311, page:8},
-  {title:"Once a man", start:313, end:367, page:9},
-  {title:"I'm listening", start:369, end:401, page:10},
-  {title:"You are very Intelligent", start:402, end:435, page:11},
-  {title:"Water comes from", start:436, end:476, page:12},
-  {title:"The dress is expensive", start:477, end:525, page:13},
-  {title:"Exercise **", start:526, end:581, page:14},
-  {title:"I'm reading in English", start:582, end:630, page:15},
-  {title:"You are so funny", start:631, end:662, page:16},
-  {title:"You should follow", start:663, end:707, page:17},
-  {title:"English my mother language", start:708, end:751, page:18},
-  {title:"Very soon", start:752, end:785, page:19},
-  {title:"Exercise ***", start:786, end:850, page:20},
+  {title:"Jump to French", start:0, end:14, page:"cover"},
+  {title:"The big whale", start:15, end:61, page:3},
+  {title:"There is a snake", start:63, end:107, page:4},
+  {title:"In my drink", start:108, end:161, page:5},
+  {title:"The little squirrel", start:162, end:213, page:6},
+  {title:"Said the sheep", start:214, end:256, page:7},
+  {title:"Exercise *", start:257, end:324, page:8},
+  {title:"A huge elephant", start:325, end:371, page:9},
+  {title:"Once a dirty fly", start:372, end:420, page:10},
+  {title:"This is a big cat", start:421, end:473, page:11},
+  {title:"The cute kangaroo", start:474, end:525, page:12},
+  {title:"Look at the geese", start:526, end:577, page:13},
+  {title:"Exercise **", start:578, end:631, page:14},
+  {title:"The heavy bear", start:632, end:687, page:15},
+  {title:"The beautiful bird", start:688, end:737, page:16},
+  {title:"The frog thought", start:739, end:782, page:17},
+  {title:"The naughty monkey", start:783, end:828, page:18},
+  {title:"Though it's hot", start:829, end:879, page:19},
+  {title:"Exercise ***", start:880, end:936, page:20}
 ];
 
-const extraPages = [{"title":"Page 1","page":1},{"title":"Page 2","page":2},{"title":"Page 21","page":21},{"title":"Page 22","page":22},{"title":"Page 23","page":23},{"title":"Page 24","page":24}];
+const extraPages = [
+  {title:"Page 1", page:1},
+  {title:"Page 2", page:2},
+  {title:"Page 21", page:21},
+  {title:"Page 22", page:22},
+  {title:"Page 23", page:23},
+  {title:"Page 24", page:24}
+];
 
 let currentChapterIndex = 0;
 let isDragging = false;

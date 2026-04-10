@@ -6,6 +6,15 @@
   const ok =
     localStorage.getItem("jtf_book3_book") === "yes" ||
     localStorage.getItem("jtf_book3_both") === "yes";
+  if (!ok) window.location.replace("/index.html");
+})();
+</script>
+
+<script>
+(function () {
+  const ok =
+    localStorage.getItem("jtf_book3_book") === "yes" ||
+    localStorage.getItem("jtf_book3_both") === "yes";
 
   if (!ok) {
     window.location.replace("/index.html");
