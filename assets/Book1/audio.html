@@ -928,6 +928,100 @@ body.dark-mode .volume::-moz-range-thumb {
     display: none !important;
   }
 }
+@media (max-width: 760px) {
+  .app {
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .left,
+  .chapter-column,
+  .main {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    border-right: none !important;
+    border-bottom: 1px solid #d0d0d0;
+    padding: 12px !important;
+  }
+
+  .top-info {
+    gap: 8px !important;
+  }
+
+  .cover-wrap {
+    margin-bottom: 6px !important;
+  }
+
+  .cover {
+    max-width: 240px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
+  .title {
+    font-size: 22px !important;
+    margin-top: 4px !important;
+  }
+
+  .sub {
+    font-size: 14px !important;
+    margin-top: 2px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .nav,
+  .chapters,
+  .extra-pages,
+  .speed-buttons,
+  .theme-buttons {
+    grid-template-columns: 1fr !important;
+  }
+
+  .player {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .player-row {
+    grid-template-columns: 1fr auto auto !important;
+  }
+
+  .chapters-scroll,
+  .audio-wrap,
+  .extra-wrap {
+    display: block !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .chapter-column {
+    padding-top: 12px !important;
+  }
+
+  .volume,
+  .volume-label,
+  .volume-value {
+    display: none !important;
+  }
+
+  .volume-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .volume-icon {
+    width: 56px !important;
+  }
+}
 </style>
 </head>
 <body oncontextmenu="return false;">
