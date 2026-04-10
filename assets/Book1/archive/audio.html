@@ -1,33 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-(function () {
-  const path = window.location.pathname.replace(/\\/g, "/");
-  const match = path.match(/Book(\d+)/i);
-  const bookNumber = match ? match[1] : null;
-  const fileName = path.split("/").pop().toLowerCase();
-
-  let allowedModes = [];
-  if (fileName === "book.html") {
-    allowedModes = ["book", "both"];
-  } else if (fileName === "audio.html") {
-    allowedModes = ["audio", "both"];
-  } else if (fileName === "book_audio.html") {
-    allowedModes = ["both"];
-  }
-
-  const hasAccess = bookNumber && allowedModes.some(function (mode) {
-    return localStorage.getItem("jtf_book" + bookNumber + "_" + mode) === "yes";
-  });
-
-  if (!hasAccess) {
-    const target = path.includes("/assets/") ? "../../index.html" : "index.html";
-    window.location.replace(target);
-  }
-})();
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jump to French - Reader</title>
@@ -36,7 +9,7 @@
 
 :root {
   --left-col: 320px;
-  --chapters-col: 235px;
+  --chapters-col: 280px;
   --divider: 10px;
 }
 
@@ -51,7 +24,9 @@ html, body {
 }
 
 body {
-  overflow: hidden;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
 }
 
 img,
@@ -62,14 +37,19 @@ audio {
 }
 
 .app {
+  align-items: stretch;
   display: grid;
   grid-template-columns:
-    minmax(240px, var(--left-col))
+    minmax(260px, var(--left-col))
     var(--divider)
-    minmax(210px, var(--chapters-col))
-    minmax(0, 1fr);
+    minmax(240px, var(--chapters-col));
+  justify-content: center;
+  align-content: center;
+  gap: 0;
   height: 100vh;
-  width: 100%;
+  width: min(100%, 920px);
+  max-width: 920px;
+  margin: 0 auto;
 }
 
 /* LEFT PANEL */
@@ -130,7 +110,7 @@ audio {
 .nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 6px;
 }
 
 .nav button {
@@ -166,7 +146,7 @@ audio {
 .player-row {
   display: grid;
   grid-template-columns: 1fr auto auto;
-  gap: 10px;
+  gap: 6px;
   align-items: center;
   margin-bottom: 12px;
 }
@@ -254,7 +234,7 @@ audio {
 .volume-row {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 10px;
+  gap: 6px;
   align-items: center;
   margin-top: 4px;
 }
@@ -284,8 +264,8 @@ audio {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 8px;
+  gap: 6px;
+  margin-bottom: 6px;
 }
 
 .speed-text {
@@ -333,9 +313,13 @@ audio {
 
 /* CHAPTER COLUMN */
 .chapter-column {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
   background: #f1f1f1;
   border-right: 1px solid #d0d0d0;
-  padding: 10px 8px 10px 8px;
+  padding: 8px 6px 8px 6px;
   min-height: 0;
   height: 100%;
   display: flex;
@@ -346,18 +330,22 @@ audio {
 .chapter-head {
   font-size: clamp(17px, 1.05vw, 20px);
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   flex-shrink: 0;
 }
 
 .chapters-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 12px;
+  padding-bottom: 10px;
   flex: 1;
   min-height: 0;
   height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .section-title {
@@ -380,14 +368,20 @@ audio {
   flex-shrink: 0;
 }
 
+.extra-wrap {
+  display: none;
+}
+
+
+
 .chapters {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  grid-auto-rows: 1fr;
-  align-content: stretch;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  grid-auto-rows: minmax(34px, auto);
+  align-content: start;
 }
 
 .extra-pages {
@@ -399,19 +393,23 @@ audio {
 
 .chapter,
 .extra-page {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border: 1px solid #c8c8c8;
   background: #fff;
   border-radius: 12px;
   min-height: 40px;
   padding: 6px 8px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.1;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 0 10px;
 }
 
 .chapter.active,
@@ -422,13 +420,7 @@ audio {
 
 /* MAIN PAGE */
 .main {
-  background: #dedede;
-  padding: 8px;
-  min-width: 0;
-  min-height: 0;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
+  display: none !important;
 }
 
 .page-stage {
@@ -473,6 +465,7 @@ audio {
 .page-top-badge,
 .page-badge {
   position: absolute;
+  left: 18px;
   background: rgba(255,255,255,0.92);
   color: #111;
   padding: 8px 12px;
@@ -533,11 +526,11 @@ audio {
 }
 
 .side-page-btn.left-btn {
-  left: 0;
+  left: 22px;
 }
 
 .side-page-btn.right-btn {
-  right: 0;
+  right: 22px;
 }
 
 .center-status {
@@ -700,14 +693,14 @@ body.dark-mode .volume::-moz-range-thumb {
 @media (max-width: 1200px) {
   :root {
     --left-col: 290px;
-    --chapters-col: 220px;
+    --chapters-col: 280px;
   }
 
   .chapter,
   .extra-page {
-    font-size: 11px;
-    min-height: 36px;
-    padding: 6px 6px;
+    font-size: 10px;
+    min-height: 32px;
+    padding: 4px 7px;
   }
 
   .side-page-btn {
@@ -721,12 +714,16 @@ body.dark-mode .volume::-moz-range-thumb {
 @media (max-width: 760px) {
   body {
     overflow: auto;
+    display: block;
   }
 
   .app {
+  align-items: stretch;
     grid-template-columns: 1fr;
     height: auto;
     min-height: 100vh;
+    width: 100%;
+    max-width: none;
   }
 
   .divider {
@@ -735,16 +732,28 @@ body.dark-mode .volume::-moz-range-thumb {
 
   .left,
   .chapter-column {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
     border-right: none;
     border-bottom: 1px solid #d0d0d0;
   }
 
   .chapter-column {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
     padding-top: 12px;
     height: auto;
   }
 
   .chapters-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 12px;
+  padding-bottom: 10px;
     overflow: visible;
     height: auto;
     display: block;
@@ -1074,9 +1083,8 @@ function updatePageLabels(pageValue) {
 }
 
 function setPage(pageValue) {
-  page.src = getPageSrc(pageValue);
-  updatePageLabels(pageValue);
-  updatePositions();
+  page.src = "cover.png"; // ALWAYS stay on cover
+  updatePageLabels("cover"); // always show "Cover"
 }
 
 function clearExtraPageActive() {
@@ -1329,52 +1337,6 @@ renderTime();
 setTimeout(() => {
   tapHint.classList.add("hidden");
 }, 3500);
-
-function updatePositions() {
-  const viewer = document.querySelector(".page-stage");
-  const wrap = document.getElementById("pageImageWrap");
-  const img = document.getElementById("page");
-  const leftBtn = document.getElementById("leftPageBtn");
-  const rightBtn = document.getElementById("rightPageBtn");
-  const pageLabel = document.getElementById("pageNumberLabel");
-  const modeLabel = document.getElementById("pageModeLabel");
-
-  const viewerRect = viewer.getBoundingClientRect();
-  const wrapRect = wrap.getBoundingClientRect();
-
-  const natW = img.naturalWidth || 1;
-  const natH = img.naturalHeight || 1;
-  const wrapW = wrapRect.width;
-  const wrapH = wrapRect.height;
-  if (!wrapW || !wrapH) return;
-
-  // actual displayed image bounds for object-fit: contain
-  const scale = Math.min(wrapW / natW, wrapH / natH);
-  const displayW = natW * scale;
-  const displayH = natH * scale;
-
-  const imgLeft = (wrapRect.left - viewerRect.left) + (wrapW - displayW) / 2;
-  const imgRight = imgLeft + displayW;
-
-  const gap = window.innerWidth <= 760 ? 6 : 10;
-
-  leftBtn.style.left =
-    Math.max(10, imgLeft - leftBtn.offsetWidth - gap) + "px";
-
-  rightBtn.style.right =
-    Math.max(10, viewerRect.width - imgRight - rightBtn.offsetWidth - gap) + "px";
-
-  
-  const extraOffset = (pageLabel.textContent === "Cover") ? 40 : 0;
-  const labelLeft = Math.max(10, imgLeft - pageLabel.offsetWidth - gap - 12 - extraOffset);
-
-  pageLabel.style.left = labelLeft + "px";
-  modeLabel.style.left = labelLeft + "px";
-}
-
-window.addEventListener("resize", updatePositions);
-document.getElementById("page").addEventListener("load", updatePositions);
-
 </script>
 </body>
 </html>

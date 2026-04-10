@@ -1,33 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-(function () {
-  const path = window.location.pathname.replace(/\\/g, "/");
-  const match = path.match(/Book(\d+)/i);
-  const bookNumber = match ? match[1] : null;
-  const fileName = path.split("/").pop().toLowerCase();
-
-  let allowedModes = [];
-  if (fileName === "book.html") {
-    allowedModes = ["book", "both"];
-  } else if (fileName === "audio.html") {
-    allowedModes = ["audio", "both"];
-  } else if (fileName === "book_audio.html") {
-    allowedModes = ["both"];
-  }
-
-  const hasAccess = bookNumber && allowedModes.some(function (mode) {
-    return localStorage.getItem("jtf_book" + bookNumber + "_" + mode) === "yes";
-  });
-
-  if (!hasAccess) {
-    const target = path.includes("/assets/") ? "../../index.html" : "index.html";
-    window.location.replace(target);
-  }
-})();
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jump to French - Reader</title>

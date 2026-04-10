@@ -3,31 +3,15 @@
 <head>
 <script>
 (function () {
-  const path = window.location.pathname.replace(/\\/g, "/");
-  const match = path.match(/Book(\d+)/i);
-  const bookNumber = match ? match[1] : null;
-  const fileName = path.split("/").pop().toLowerCase();
+  const ok =
+    localStorage.getItem("jtf_book1_book") === "yes" ||
+    localStorage.getItem("jtf_book1_both") === "yes";
 
-  let allowedModes = [];
-  if (fileName === "book.html") {
-    allowedModes = ["book", "both"];
-  } else if (fileName === "audio.html") {
-    allowedModes = ["audio", "both"];
-  } else if (fileName === "book_audio.html") {
-    allowedModes = ["both"];
-  }
-
-  const hasAccess = bookNumber && allowedModes.some(function (mode) {
-    return localStorage.getItem("jtf_book" + bookNumber + "_" + mode) === "yes";
-  });
-
-  if (!hasAccess) {
-    const target = path.includes("/assets/") ? "../../index.html" : "index.html";
-    window.location.replace(target);
+  if (!ok) {
+    window.location.replace("/index.html");
   }
 })();
 </script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Page Viewer</title>
