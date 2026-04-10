@@ -657,5 +657,21 @@ document.addEventListener("keydown", function(e) {
   }
 });
 </script>
+<script>
+function closeModalFully() {
+  modal.classList.remove("show");
+  passwordInput.value = "";
+  errorBox.textContent = "";
+  pendingMode = null;
+}
+
+window.addEventListener("pageshow", function () {
+  closeModalFully();
+});
+
+window.addEventListener("load", function () {
+  closeModalFully();
+});
+</script>
 </body>
 </html>
