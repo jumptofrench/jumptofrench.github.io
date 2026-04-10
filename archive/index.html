@@ -172,28 +172,23 @@ audio{
 }
 .book:hover{
   transform:translateY(-3px);
-  box-shadow:0 14px 26px rgba(0,0,0,.18);
 }
 .book.selected{
-  border:4px solid #ff3b30;
-  box-shadow:
-    0 0 0 4px rgba(255,59,48,.35),
-    0 0 28px rgba(255,59,48,.45),
-    0 14px 28px rgba(0,0,0,.24);
-  transform:translateY(-2px) scale(1.02);
+  border:3px solid #fff;
+  box-shadow:0 0 0 3px rgba(255,255,255,.25), 0 14px 28px rgba(0,0,0,.22);
+  transform:translateY(-2px);
 }
 .book.selected::after{
   content:"Selected";
   position:absolute;
   top:10px;
   left:10px;
-  background:#ff3b30;
-  color:#fff;
+  background:#fff;
+  color:#3f3f3f;
   font-size:11px;
   font-weight:700;
-  padding:5px 9px;
+  padding:4px 8px;
   border-radius:999px;
-  box-shadow:0 6px 14px rgba(255,59,48,.35);
 }
 .book img{
   display:block;
@@ -244,6 +239,26 @@ audio{
 .both{background:linear-gradient(135deg,#38a2ff,#55b8ff)}
 .audio{background:linear-gradient(135deg,#f0a42f,#ffc04e)}
 .book-only{background:linear-gradient(135deg,#40b552,#62cf71)}
+.saved{
+  padding:12px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  font-size:14px;
+  color:rgba(255,255,255,.88);
+  margin-top:2px;
+}
+.small-btn{
+  width:100%;
+  border:none;
+  border-radius:14px;
+  padding:11px 12px;
+  margin-top:10px;
+  cursor:pointer;
+  background:rgba(255,255,255,.14);
+  color:#fff;
+  font-size:14px;
+}
 .note{
   margin-top:14px;
   font-size:13px;
@@ -282,6 +297,13 @@ audio{
   padding:14px;
   font-size:16px;
   margin-bottom:12px;
+}
+.remember{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-bottom:14px;
+  font-size:15px;
 }
 .error{
   min-height:18px;
@@ -411,7 +433,10 @@ audio{
         <small>Open the selected book</small>
       </button>
 
-<div class="note">After password check, the page opens the book you selected. The same access type works for all 5 books.</div>
+      <div class="saved" id="savedStatus">No password saved on this device.</div>
+      <button class="small-btn" id="clearSaved" type="button">Clear Saved Password</button>
+
+      <div class="note">After password check, the page opens the book you selected. The same access type works for all 5 books.</div>
     </div>
   </div>
 </div>
@@ -422,7 +447,11 @@ audio{
     <p>Please enter the password for this access type.</p>
     <div class="error" id="errorBox"></div>
     <input class="field" id="password" type="password" placeholder="Password">
-<div class="actions">
+    <label class="remember">
+      <input type="checkbox" id="rememberCheck" checked>
+      Remember password on this device
+    </label>
+    <div class="actions">
       <button class="cancel" id="cancelBtn" type="button">Cancel</button>
       <button class="submit" id="submitBtn" type="button">Enter</button>
     </div>
@@ -436,11 +465,7 @@ const PASSWORD_HASHES = {
   both: "59bb942dd46ba5eda9c99993d53b491ee5289b9e7ae396fb4c8eecdd8af3d79c"
 };
 
-const STORAGE_KEYS = {
-  book: "jump_to_french_saved_book_hash",
-  audio: "jump_to_french_saved_audio_hash",
-  both: "jump_to_french_saved_both_hash"
-};
+const STORAGE_KEY = "jump_to_french_saved_password_hash";
 
 let selectedBook = null;
 let pendingMode = null;
@@ -450,6 +475,8 @@ const playBtn = document.getElementById("playBtn");
 const audioText = document.getElementById("audioText");
 const modal = document.getElementById("modal");
 const passwordInput = document.getElementById("password");
+const rememberCheck = document.getElementById("rememberCheck");
+const savedStatus = document.getElementById("savedStatus");
 const errorBox = document.getElementById("errorBox");
 const modalTitle = document.getElementById("modalTitle");
 
@@ -492,6 +519,7 @@ audio.addEventListener("pause", updatePlayUI);
 window.addEventListener("load", () => {
   audio.pause();
   updatePlayUI();
+  refreshSaved();
 });
 
 document.querySelectorAll(".book").forEach(book => {
@@ -512,7 +540,7 @@ document.querySelectorAll(".option").forEach(btn => {
     }
 
     pendingMode = btn.dataset.mode;
-    const savedHash = localStorage.getItem(STORAGE_KEYS[pendingMode]);
+    const savedHash = localStorage.getItem(STORAGE_KEY);
 
     if(savedHash && savedHash === PASSWORD_HASHES[pendingMode]){
       clearBookAccessKeys();
@@ -543,6 +571,20 @@ function getDestination(bookNumber, mode){
   return `assets/Book${bookNumber}/book_audio.html`;
 }
 
+function refreshSaved(){
+  const savedHash = localStorage.getItem(STORAGE_KEY);
+  if(savedHash){
+    savedStatus.textContent = "Saved password found on this device.";
+  }else{
+    savedStatus.textContent = "No password saved on this device.";
+  }
+}
+
+document.getElementById("clearSaved").addEventListener("click", () => {
+  localStorage.removeItem(STORAGE_KEY);
+  clearBookAccessKeys();
+  refreshSaved();
+});
 
 document.getElementById("cancelBtn").addEventListener("click", () => {
   modal.classList.remove("show");
@@ -577,11 +619,16 @@ async function submitPassword(){
     return;
   }
 
-  localStorage.setItem(STORAGE_KEYS[pendingMode], hashed);
+  if(rememberCheck.checked){
+    localStorage.setItem(STORAGE_KEY, hashed);
+  }else{
+    localStorage.removeItem(STORAGE_KEY);
+  }
 
   clearBookAccessKeys();
   localStorage.setItem(`jtf_book${selectedBook}_${pendingMode}`, "yes");
 
+  refreshSaved();
   window.location.href = getDestination(selectedBook, pendingMode);
 }
 
