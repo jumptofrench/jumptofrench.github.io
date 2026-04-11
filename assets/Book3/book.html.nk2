@@ -90,15 +90,12 @@ button {
   transform: translateY(-50%);
   width: 52px;
   height: 66px;
-  border: 1px solid rgba(255,255,255,0.9);
+  border: 1px solid #d5d5d5;
   border-radius: 16px;
-  background: rgba(255,255,255,0.85);
-  color: #111;
+  background: rgba(255,255,255,0.96);
   font-size: 38px;
   cursor: pointer;
   z-index: 3;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 .left { left: 18px; }
@@ -115,34 +112,6 @@ button {
   z-index: 3;
   white-space: nowrap;
 }
-
-@media (max-width: 700px) {
-  .viewer-shell {
-    padding: 0;
-  }
-
-  .page-stage {
-    padding: 0;
-  }
-
-  img {
-    width: 100%;
-    height: auto;
-    max-height: 100%;
-    object-fit: contain;
-  }
-
-  button {
-    width: 44px;
-    height: 64px;
-    font-size: 32px;
-    background: rgba(255,255,255,0.9);
-  }
-
-  .left { left: 6px !important; }
-  .right { right: 6px !important; }
-}
-
 </style>
 </head>
 <body>
