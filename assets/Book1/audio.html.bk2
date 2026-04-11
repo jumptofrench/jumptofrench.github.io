@@ -293,17 +293,6 @@ audio {
   margin-top: 6px;
 }
 
-.volume-note {
-  font-size: 12px;
-  color: #777;
-  margin-top: 4px;
-  display: none;
-}
-
-body.dark-mode .volume-note {
-  color: #bdbdbd;
-}
-
 .speed-wrap {
   margin-top: 12px;
 }
@@ -951,7 +940,6 @@ body.dark-mode .volume::-moz-range-thumb {
         <input id="volumeBar" class="volume" type="range" min="0" max="1" value="1" step="0.01">
       </div>
       <div class="volume-value" id="volumeLabel">100%</div>
-      <div class="volume-note" id="volumeNote">On mobile, use device volume buttons</div>
 
       <div class="speed-wrap">
         <div class="speed-top">
@@ -1074,7 +1062,6 @@ const nextBtn = document.getElementById("nextBtn");
 const muteBtn = document.getElementById("muteBtn");
 const volumeBar = document.getElementById("volumeBar");
 const volumeLabel = document.getElementById("volumeLabel");
-const volumeNote = document.getElementById("volumeNote");
 const slowBtn = document.getElementById("slowBtn");
 const normalBtn = document.getElementById("normalBtn");
 const fastBtn = document.getElementById("fastBtn");
@@ -1085,10 +1072,6 @@ const lightModeBtn = document.getElementById("lightModeBtn");
 const darkModeBtn = document.getElementById("darkModeBtn");
 const leftPageBtn = document.getElementById("leftPageBtn");
 const rightPageBtn = document.getElementById("rightPageBtn");
-
-const isiOSVolumeLocked =
-  /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
 function formatTime(seconds) {
   if (!isFinite(seconds)) return "0:00";
@@ -1102,17 +1085,9 @@ function renderTime() {
 }
 
 function renderVolume() {
-  if (isiOSVolumeLocked) {
-    volumeLabel.textContent = "Use phone buttons";
-    muteBtn.textContent = audio.muted ? "🔇" : "🔊";
-    if (volumeNote) volumeNote.style.display = "block";
-    return;
-  }
-
   const pct = Math.round(audio.volume * 100);
   volumeLabel.textContent = pct + "%";
   muteBtn.textContent = (audio.muted || audio.volume === 0) ? "🔇" : "🔊";
-  if (volumeNote) volumeNote.style.display = "none";
 }
 
 function renderSpeedButtons(active) {
@@ -1368,11 +1343,6 @@ seekBar.addEventListener("change", () => {
 });
 
 volumeBar.addEventListener("input", () => {
-  if (isiOSVolumeLocked) {
-    renderVolume();
-    return;
-  }
-
   audio.volume = Number(volumeBar.value);
   audio.muted = false;
   lastVolume = audio.volume > 0 ? audio.volume : lastVolume;
@@ -1416,11 +1386,6 @@ document.addEventListener("keydown", (event) => {
 setActiveChapter(0, false);
 audio.volume = 1;
 volumeBar.value = 1;
-
-if (isiOSVolumeLocked) {
-  volumeBar.disabled = true;
-}
-
 renderVolume();
 setReadingSpeed("normal");
 setTheme("light");
