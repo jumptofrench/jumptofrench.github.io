@@ -36,44 +36,7 @@
   .hero {
     display: none !important;
   }
-
-  .viewer-shell {
-    padding: 0;
-  }
-
-  .viewer {
-    border-radius: 0;
-  }
-
-  .page-stage {
-    padding: 0 52px;
-  }
-
-  button {
-    width: 42px;
-    height: 58px;
-    border-radius: 14px;
-    background: rgba(255,255,255,0.28);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-    font-size: 34px;
-  }
-
-  .left {
-    left: 6px !important;
-  }
-
-  .right {
-    right: 6px !important;
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
 }
-
 * { box-sizing: border-box; }
 
 html, body {
@@ -106,7 +69,7 @@ html, body {
 .page-stage {
   position: absolute;
   inset: 0;
-  padding: 6px 64px;
+  padding: 6px 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,11 +77,10 @@ html, body {
 
 img {
   display: block;
-  width: 100%;
+  width: auto;
   height: 100%;
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain;
   -webkit-user-drag: none;
   user-select: none;
   pointer-events: none;
@@ -130,14 +92,12 @@ button {
   transform: translateY(-50%);
   width: 52px;
   height: 66px;
-  border: none;
+  border: 1px solid #d5d5d5;
   border-radius: 16px;
-  background: rgba(255,255,255,0.92);
+  background: rgba(255,255,255,0.96);
   font-size: 38px;
   cursor: pointer;
   z-index: 3;
-  color: #333;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.14);
 }
 
 .left { left: 18px; }
@@ -181,12 +141,6 @@ function updatePositions() {
   const rightBtn = document.getElementById("rightBtn");
   const label = document.getElementById("label");
 
-  if (window.innerWidth <= 700) {
-    leftBtn.style.left = "6px";
-    rightBtn.style.right = "6px";
-    return;
-  }
-
   const viewerRect = viewer.getBoundingClientRect();
   const imgRect = img.getBoundingClientRect();
 
@@ -200,6 +154,7 @@ function updatePositions() {
   leftBtn.style.left = Math.max(10, leftPos) + "px";
   rightBtn.style.right = Math.max(10, rightPos) + "px";
 
+  // adjusted closer (balanced)
   const labelLeft = imgRect.left - viewerRect.left - 110;
   label.style.left = Math.max(10, labelLeft) + "px";
 }
