@@ -62,7 +62,6 @@ html, body {
   position: relative;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  touch-action: pan-y pinch-zoom;
 }
 
 .page-stage {
@@ -91,18 +90,12 @@ button {
   transform: translateY(-50%);
   width: 52px;
   height: 66px;
-  border: 1px solid rgba(255,255,255,0.9);
+  border: 1px solid #d5d5d5;
   border-radius: 16px;
-  background: rgba(30,30,30,0.55);
-  color: #fff;
+  background: rgba(255,255,255,0.96);
   font-size: 38px;
-  font-weight: 700;
-  line-height: 1;
   cursor: pointer;
   z-index: 3;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
 }
 
 .left { left: 18px; }
@@ -118,46 +111,6 @@ button {
   font-size: 16px;
   z-index: 3;
   white-space: nowrap;
-}
-
-@media (max-width: 700px) {
-  .viewer-shell {
-    padding: 0;
-  }
-
-  .viewer {
-    border-radius: 0;
-  }
-
-  .page-stage {
-    padding: 0 8px;
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
-    max-width: none;
-    max-height: none;
-  }
-
-  button {
-    width: 52px;
-    height: 52px;
-    font-size: 34px;
-    border-radius: 999px;
-    background: rgba(20,20,20,0.62);
-    border: 1px solid rgba(255,255,255,0.95);
-  }
-
-  .left {
-    left: 8px !important;
-  }
-
-  .right {
-    right: 8px !important;
-  }
 }
 </style>
 </head>
@@ -179,14 +132,8 @@ button {
 <script>
 let current = 0;
 const total = 24;
-let touchStartX = 0;
-let touchStartY = 0;
-let touchEndX = 0;
-let touchEndY = 0;
 
 function updatePositions() {
-  if (window.innerWidth <= 700) return;
-
   const viewer = document.getElementById("viewer");
   const img = document.getElementById("page");
   const leftBtn = document.getElementById("leftBtn");
@@ -206,6 +153,7 @@ function updatePositions() {
   leftBtn.style.left = Math.max(10, leftPos) + "px";
   rightBtn.style.right = Math.max(10, rightPos) + "px";
 
+  // FIX: label uses its own width (no overlap for 2-digit)
   const labelLeft = imgRect.left - viewerRect.left - label.offsetWidth - gap;
   label.style.left = Math.max(10, labelLeft) + "px";
 }
@@ -233,33 +181,6 @@ function next() {
 function prev() {
   if (current > 0) current--;
   update();
-}
-
-const viewer = document.getElementById("viewer");
-viewer.addEventListener("touchstart", function (e) {
-  const touch = e.changedTouches[0];
-  touchStartX = touch.screenX;
-  touchStartY = touch.screenY;
-}, { passive: true });
-
-viewer.addEventListener("touchend", function (e) {
-  const touch = e.changedTouches[0];
-  touchEndX = touch.screenX;
-  touchEndY = touch.screenY;
-  handleSwipe();
-}, { passive: true });
-
-function handleSwipe() {
-  const dx = touchEndX - touchStartX;
-  const dy = touchEndY - touchStartY;
-
-  if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
-
-  if (dx < 0) {
-    next();
-  } else {
-    prev();
-  }
 }
 
 document.addEventListener("contextmenu", e => e.preventDefault());
