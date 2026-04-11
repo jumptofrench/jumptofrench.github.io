@@ -26,7 +26,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jump to French — Book 3</title>
 <style>
-
+@media (max-width: 700px) {
+  .page-label,
+  .cover,
+  .cover-container,
+  .viewer-header,
+  .hero {
+    display: none !important;
+  }
+}
 * { box-sizing: border-box; }
 
 html, body {
@@ -104,55 +112,6 @@ button {
   z-index: 3;
   white-space: nowrap;
 }
-
-@media (max-width: 700px) {
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100dvh;
-    overflow: hidden;
-  }
-
-  .viewer-shell {
-    padding: 0 !important;
-    height: 100dvh !important;
-  }
-
-  .viewer {
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    height: 100dvh !important;
-  }
-
-  .page-stage {
-    inset: 0;
-    padding: 0 !important;
-  }
-
-  img {
-    width: auto !important;
-    height: 100% !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
-    object-fit: contain !important;
-  }
-
-  .left { left: 4px !important; }
-  .right { right: 4px !important; }
-
-  button {
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    color: rgba(0,0,0,0.78) !important;
-    text-shadow: 0 2px 6px rgba(255,255,255,0.9) !important;
-  }
-
-  .page-label {
-    display: none !important;
-  }
-}
-
 </style>
 </head>
 <body>
