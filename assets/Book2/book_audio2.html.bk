@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" href="book4.ico">
+  <link rel="icon" href="book2.ico">
 <script>
 (function () {
-  const ok =
-    localStorage.getItem("jtf_book4_both") === "yes";
-  if (!ok) window.location.replace("/index.html");
+  const ok = localStorage.getItem("jtf_book2_both") === "yes";
+
+  if (!ok) {
+    window.location.replace("/index.html");
+  }
 })();
 </script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jump to French — Book 4 (Book + Audio)</title>
+<title>Jump to French — Book 2 (Book + Audio)</title>
 <style>
 * { box-sizing: border-box; }
 
@@ -22,14 +23,9 @@
   --divider: 10px;
 }
 
-html {
-  height: 100%;
-  height: -webkit-fill-available;
-}
-
 html, body {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
   font-family: Arial, Helvetica, sans-serif;
   background: #e7e7e7;
   color: #111;
@@ -38,9 +34,6 @@ html, body {
 }
 
 body {
-  min-height: 100vh;
-  min-height: 100dvh;
-  min-height: -webkit-fill-available;
   overflow: hidden;
 }
 
@@ -264,17 +257,6 @@ audio {
   font-size: 13px;
   color: #555;
   margin-top: 6px;
-}
-
-.volume-note {
-  font-size: 12px;
-  color: #777;
-  margin-top: 4px;
-  display: none;
-}
-
-body.dark-mode .volume-note {
-  color: #bdbdbd;
 }
 
 .speed-wrap {
@@ -721,24 +703,14 @@ body.dark-mode .volume::-moz-range-thumb {
 
 /* PHONE */
 @media (max-width: 760px) {
-  html,
   body {
-    height: auto;
-    min-height: 100%;
-  }
-
-  body {
-    overflow-x: hidden;
-    overflow-y: auto;
-    display: block;
+    overflow: auto;
   }
 
   .app {
-    display: grid;
     grid-template-columns: 1fr;
     height: auto;
-    min-height: 100dvh;
-    width: 100%;
+    min-height: 100vh;
   }
 
   .divider {
@@ -746,35 +718,19 @@ body.dark-mode .volume::-moz-range-thumb {
   }
 
   .left,
-  .chapter-column,
-  .main {
+  .chapter-column {
     border-right: none;
     border-bottom: 1px solid #d0d0d0;
-    height: auto;
-    min-height: unset;
-    overflow: visible;
-  }
-
-  .left {
-    display: block;
-    padding: 14px 14px 18px;
   }
 
   .chapter-column {
-    display: block;
-    padding: 12px 10px 18px;
-  }
-
-  .main {
-    display: block;
-    padding: 12px 10px calc(22px + env(safe-area-inset-bottom));
-    background: #dedede;
+    padding-top: 12px;
+    height: auto;
   }
 
   .chapters-scroll {
     overflow: visible;
     height: auto;
-    min-height: unset;
     display: block;
   }
 
@@ -785,7 +741,7 @@ body.dark-mode .volume::-moz-range-thumb {
 
   .chapters,
   .extra-pages {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .cover {
@@ -793,40 +749,13 @@ body.dark-mode .volume::-moz-range-thumb {
     max-height: none;
   }
 
-  .player {
-    overflow: visible;
-  }
-
-  .player-row {
-    grid-template-columns: 1fr auto auto;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .volume-row {
-    grid-template-columns: 60px 1fr;
-    align-items: center;
-  }
-
-  .seek,
-  .volume {
-    width: 100%;
-    min-width: 0;
+  .main {
+    min-height: 55vh;
   }
 
   .page-stage {
-    min-height: 62vh;
-    padding-left: 18px;
+    padding-
     padding-right: 18px;
-  }
-
-  .page-top-badge,
-  .page-badge {
-    display: none;
-  }
-
-  .tap-hint {
-    display: none;
   }
 
   .side-page-btn {
@@ -903,8 +832,8 @@ body.dark-mode .volume::-moz-range-thumb {
         <img src="cover.png" class="cover" alt="Book cover">
       </div>
       <div>
-        <div class="title">Jump to French - Book 4</div>
-        <div class="sub">People</div>
+        <div class="title">Jump to French - Book 2</div>
+        <div class="sub">Animals</div>
       </div>
     </div>
 
@@ -929,7 +858,6 @@ body.dark-mode .volume::-moz-range-thumb {
         <input id="volumeBar" class="volume" type="range" min="0" max="1" value="1" step="0.01">
       </div>
       <div class="volume-value" id="volumeLabel">100%</div>
-      <div class="volume-note" id="volumeNote">On mobile, use device volume buttons</div>
 
       <div class="speed-wrap">
         <div class="speed-top">
@@ -999,28 +927,35 @@ body.dark-mode .volume::-moz-range-thumb {
 const TOTAL_PAGES = 24;
 
 const chapters = [
-  {title:"Jump to French", start:0, end:12, page:"cover"},
-  {title:"The door is closed", start:13, end:62, page:3},
-  {title:"I saw my father", start:63, end:94, page:4},
-  {title:"I saw my neighbor", start:95, end:131, page:5},
-  {title:"Sometimes you yell", start:132, end:166, page:6},
-  {title:"I saw my brother", start:167, end:191, page:7},
-  {title:"Exercise *", start:192, end:248, page:8},
-  {title:"Be proud!", start:249, end:295, page:9},
-  {title:"The table is ready", start:296, end:345, page:10},
-  {title:"Celebs are celebrities", start:346, end:383, page:11},
-  {title:"I'm in a bad mood", start:384, end:427, page:12},
-  {title:"On Sunday", start:428, end:473, page:13},
-  {title:"Exercise **", start:474, end:534, page:14},
-  {title:"It's very true", start:535, end:578, page:15},
-  {title:"Help me!", start:579, end:617, page:16},
-  {title:"Goodbye", start:618, end:651, page:17},
-  {title:"I see in your eyes", start:652, end:696, page:18},
-  {title:"Indeed you want", start:697, end:726, page:19},
-  {title:"Exercise ***", start:727, end:785, page:20}
+  {title:"Jump to French", start:0, end:14, page:"cover"},
+  {title:"The big whale", start:15, end:61, page:3},
+  {title:"There is a snake", start:63, end:107, page:4},
+  {title:"In my drink", start:108, end:161, page:5},
+  {title:"The little squirrel", start:162, end:213, page:6},
+  {title:"Said the sheep", start:214, end:256, page:7},
+  {title:"Exercise *", start:257, end:324, page:8},
+  {title:"A huge elephant", start:325, end:371, page:9},
+  {title:"Once a dirty fly", start:372, end:420, page:10},
+  {title:"This is a big cat", start:421, end:473, page:11},
+  {title:"The cute kangaroo", start:474, end:525, page:12},
+  {title:"Look at the geese", start:526, end:577, page:13},
+  {title:"Exercise **", start:578, end:631, page:14},
+  {title:"The heavy bear", start:632, end:687, page:15},
+  {title:"The beautiful bird", start:688, end:737, page:16},
+  {title:"The frog thought", start:739, end:782, page:17},
+  {title:"The naughty monkey", start:783, end:828, page:18},
+  {title:"Though it's hot", start:829, end:879, page:19},
+  {title:"Exercise ***", start:880, end:936, page:20}
 ];
 
-const extraPages = [{"title":"Page 1","page":1},{"title":"Page 2","page":2},{"title":"Page 21","page":21},{"title":"Page 22","page":22},{"title":"Page 23","page":23},{"title":"Page 24","page":24}];
+const extraPages = [
+  {title:"Page 1", page:1},
+  {title:"Page 2", page:2},
+  {title:"Page 21", page:21},
+  {title:"Page 22", page:22},
+  {title:"Page 23", page:23},
+  {title:"Page 24", page:24}
+];
 
 let currentChapterIndex = 0;
 let isDragging = false;
@@ -1045,7 +980,6 @@ const nextBtn = document.getElementById("nextBtn");
 const muteBtn = document.getElementById("muteBtn");
 const volumeBar = document.getElementById("volumeBar");
 const volumeLabel = document.getElementById("volumeLabel");
-const volumeNote = document.getElementById("volumeNote");
 const slowBtn = document.getElementById("slowBtn");
 const normalBtn = document.getElementById("normalBtn");
 const fastBtn = document.getElementById("fastBtn");
@@ -1056,10 +990,6 @@ const lightModeBtn = document.getElementById("lightModeBtn");
 const darkModeBtn = document.getElementById("darkModeBtn");
 const leftPageBtn = document.getElementById("leftPageBtn");
 const rightPageBtn = document.getElementById("rightPageBtn");
-
-const isiOSVolumeLocked =
-  /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
 function formatTime(seconds) {
   if (!isFinite(seconds)) return "0:00";
@@ -1073,17 +1003,9 @@ function renderTime() {
 }
 
 function renderVolume() {
-  if (isiOSVolumeLocked) {
-    volumeLabel.textContent = "Use phone buttons";
-    muteBtn.textContent = audio.muted ? "🔇" : "🔊";
-    if (volumeNote) volumeNote.style.display = "block";
-    return;
-  }
-
   const pct = Math.round(audio.volume * 100);
   volumeLabel.textContent = pct + "%";
   muteBtn.textContent = (audio.muted || audio.volume === 0) ? "🔇" : "🔊";
-  if (volumeNote) volumeNote.style.display = "none";
 }
 
 function renderSpeedButtons(active) {
@@ -1340,11 +1262,6 @@ seekBar.addEventListener("change", () => {
 });
 
 volumeBar.addEventListener("input", () => {
-  if (isiOSVolumeLocked) {
-    renderVolume();
-    return;
-  }
-
   audio.volume = Number(volumeBar.value);
   audio.muted = false;
   lastVolume = audio.volume > 0 ? audio.volume : lastVolume;
@@ -1388,11 +1305,6 @@ document.addEventListener("keydown", (event) => {
 setActiveChapter(0, false);
 audio.volume = 1;
 volumeBar.value = 1;
-
-if (isiOSVolumeLocked) {
-  volumeBar.disabled = true;
-}
-
 renderVolume();
 setReadingSpeed("normal");
 setTheme("light");

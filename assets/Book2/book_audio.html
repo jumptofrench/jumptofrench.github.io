@@ -23,9 +23,14 @@
   --divider: 10px;
 }
 
+html {
+  height: 100%;
+  height: -webkit-fill-available;
+}
+
 html, body {
   margin: 0;
-  height: 100%;
+  min-height: 100%;
   font-family: Arial, Helvetica, sans-serif;
   background: #e7e7e7;
   color: #111;
@@ -34,6 +39,9 @@ html, body {
 }
 
 body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
   overflow: hidden;
 }
 
@@ -257,6 +265,17 @@ audio {
   font-size: 13px;
   color: #555;
   margin-top: 6px;
+}
+
+.volume-note {
+  font-size: 12px;
+  color: #777;
+  margin-top: 4px;
+  display: none;
+}
+
+body.dark-mode .volume-note {
+  color: #bdbdbd;
 }
 
 .speed-wrap {
@@ -703,14 +722,24 @@ body.dark-mode .volume::-moz-range-thumb {
 
 /* PHONE */
 @media (max-width: 760px) {
+  html,
   body {
-    overflow: auto;
+    height: auto;
+    min-height: 100%;
+  }
+
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: block;
   }
 
   .app {
+    display: grid;
     grid-template-columns: 1fr;
     height: auto;
-    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
   }
 
   .divider {
@@ -718,19 +747,35 @@ body.dark-mode .volume::-moz-range-thumb {
   }
 
   .left,
-  .chapter-column {
+  .chapter-column,
+  .main {
     border-right: none;
     border-bottom: 1px solid #d0d0d0;
+    height: auto;
+    min-height: unset;
+    overflow: visible;
+  }
+
+  .left {
+    display: block;
+    padding: 14px 14px 18px;
   }
 
   .chapter-column {
-    padding-top: 12px;
-    height: auto;
+    display: block;
+    padding: 12px 10px 18px;
+  }
+
+  .main {
+    display: block;
+    padding: 12px 10px calc(22px + env(safe-area-inset-bottom));
+    background: #dedede;
   }
 
   .chapters-scroll {
     overflow: visible;
     height: auto;
+    min-height: unset;
     display: block;
   }
 
@@ -741,7 +786,7 @@ body.dark-mode .volume::-moz-range-thumb {
 
   .chapters,
   .extra-pages {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .cover {
@@ -749,13 +794,40 @@ body.dark-mode .volume::-moz-range-thumb {
     max-height: none;
   }
 
-  .main {
-    min-height: 55vh;
+  .player {
+    overflow: visible;
+  }
+
+  .player-row {
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .volume-row {
+    grid-template-columns: 60px 1fr;
+    align-items: center;
+  }
+
+  .seek,
+  .volume {
+    width: 100%;
+    min-width: 0;
   }
 
   .page-stage {
-    padding-
+    min-height: 62vh;
+    padding-left: 18px;
     padding-right: 18px;
+  }
+
+  .page-top-badge,
+  .page-badge {
+    display: none;
+  }
+
+  .tap-hint {
+    display: none;
   }
 
   .side-page-btn {
@@ -858,6 +930,7 @@ body.dark-mode .volume::-moz-range-thumb {
         <input id="volumeBar" class="volume" type="range" min="0" max="1" value="1" step="0.01">
       </div>
       <div class="volume-value" id="volumeLabel">100%</div>
+      <div class="volume-note" id="volumeNote">On mobile, use device volume buttons</div>
 
       <div class="speed-wrap">
         <div class="speed-top">
@@ -980,6 +1053,7 @@ const nextBtn = document.getElementById("nextBtn");
 const muteBtn = document.getElementById("muteBtn");
 const volumeBar = document.getElementById("volumeBar");
 const volumeLabel = document.getElementById("volumeLabel");
+const volumeNote = document.getElementById("volumeNote");
 const slowBtn = document.getElementById("slowBtn");
 const normalBtn = document.getElementById("normalBtn");
 const fastBtn = document.getElementById("fastBtn");
@@ -990,6 +1064,10 @@ const lightModeBtn = document.getElementById("lightModeBtn");
 const darkModeBtn = document.getElementById("darkModeBtn");
 const leftPageBtn = document.getElementById("leftPageBtn");
 const rightPageBtn = document.getElementById("rightPageBtn");
+
+const isiOSVolumeLocked =
+  /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
 function formatTime(seconds) {
   if (!isFinite(seconds)) return "0:00";
@@ -1003,9 +1081,17 @@ function renderTime() {
 }
 
 function renderVolume() {
+  if (isiOSVolumeLocked) {
+    volumeLabel.textContent = "Use phone buttons";
+    muteBtn.textContent = audio.muted ? "🔇" : "🔊";
+    if (volumeNote) volumeNote.style.display = "block";
+    return;
+  }
+
   const pct = Math.round(audio.volume * 100);
   volumeLabel.textContent = pct + "%";
   muteBtn.textContent = (audio.muted || audio.volume === 0) ? "🔇" : "🔊";
+  if (volumeNote) volumeNote.style.display = "none";
 }
 
 function renderSpeedButtons(active) {
@@ -1262,6 +1348,11 @@ seekBar.addEventListener("change", () => {
 });
 
 volumeBar.addEventListener("input", () => {
+  if (isiOSVolumeLocked) {
+    renderVolume();
+    return;
+  }
+
   audio.volume = Number(volumeBar.value);
   audio.muted = false;
   lastVolume = audio.volume > 0 ? audio.volume : lastVolume;
@@ -1305,6 +1396,11 @@ document.addEventListener("keydown", (event) => {
 setActiveChapter(0, false);
 audio.volume = 1;
 volumeBar.value = 1;
+
+if (isiOSVolumeLocked) {
+  volumeBar.disabled = true;
+}
+
 renderVolume();
 setReadingSpeed("normal");
 setTheme("light");
