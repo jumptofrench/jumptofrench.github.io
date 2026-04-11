@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" href="book2.ico">
+  <link rel="icon" href="book5.ico">
 <script>
 (function () {
   const ok =
-    localStorage.getItem("jtf_book2_audio") === "yes" ||
-    localStorage.getItem("jtf_book2_both") === "yes";
-
-  if (!ok) {
-    window.location.replace("/index.html");
-  }
+    localStorage.getItem("jtf_book5_audio") === "yes" ||
+    localStorage.getItem("jtf_book5_both") === "yes";
+  if (!ok) window.location.replace("/index.html");
 })();
 </script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jump to French — Book 2 (Audio)</title>
+<title>Jump to French — Book 5 (Audio)</title>
 <style>
 * { box-sizing: border-box; }
 
@@ -26,15 +23,9 @@
   --divider: 10px;
 }
 
-html {
-  margin: 0;
-  height: 100%;
-  height: -webkit-fill-available;
-}
-
 html, body {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
   font-family: Arial, Helvetica, sans-serif;
   background: #e7e7e7;
   color: #111;
@@ -43,9 +34,6 @@ html, body {
 }
 
 body {
-  min-height: 100vh;
-  min-height: 100dvh;
-  min-height: -webkit-fill-available;
   overflow: auto;
   display: flex;
   justify-content: center;
@@ -745,23 +733,16 @@ body.dark-mode .volume::-moz-range-thumb {
 
 /* PHONE */
 @media (max-width: 760px) {
-  html,
   body {
-    height: auto;
-    min-height: 100%;
-  }
-
-  body {
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: auto;
     display: block;
   }
 
   .app {
-    align-items: stretch;
+  align-items: stretch;
     grid-template-columns: 1fr;
     height: auto;
-    min-height: 100dvh;
+    min-height: 100vh;
     width: 100%;
     max-width: none;
   }
@@ -772,27 +753,29 @@ body.dark-mode .volume::-moz-range-thumb {
 
   .left,
   .chapter-column {
-    height: auto;
-    min-height: unset;
-    overflow: visible;
-    display: block;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
     border-right: none;
     border-bottom: 1px solid #d0d0d0;
   }
 
-  .left {
-    padding: 14px 14px calc(22px + env(safe-area-inset-bottom));
-  }
-
   .chapter-column {
-    padding: 12px 10px calc(22px + env(safe-area-inset-bottom));
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+    padding-top: 12px;
+    height: auto;
   }
 
   .chapters-scroll {
-    flex: unset;
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 12px;
+  padding-bottom: 10px;
     overflow: visible;
-    padding-bottom: 0;
-    min-height: unset;
     height: auto;
     display: block;
   }
@@ -812,23 +795,8 @@ body.dark-mode .volume::-moz-range-thumb {
     max-height: none;
   }
 
-  .player {
-    overflow: visible;
-  }
-
-  .volume-row {
-    grid-template-columns: 60px 1fr;
-    align-items: center;
-  }
-
-  .seek,
-  .volume {
-    width: 100%;
-    min-width: 0;
-  }
-
   .main {
-    min-height: 55dvh;
+    min-height: 55vh;
   }
 
   .page-stage {
@@ -910,8 +878,8 @@ body.dark-mode .volume::-moz-range-thumb {
         <img src="cover.png" class="cover" alt="Book cover">
       </div>
       <div>
-        <div class="title">Jump to French - Book 2</div>
-        <div class="sub">Animals</div>
+        <div class="title">Jump to French - Book 5</div>
+        <div class="sub">Good to Know</div>
       </div>
     </div>
 
@@ -1006,25 +974,25 @@ body.dark-mode .volume::-moz-range-thumb {
 const TOTAL_PAGES = 24;
 
 const chapters = [
-  {title:"Jump to French", start:0, end:14, page:"cover"},
-  {title:"The big whale", start:15, end:61, page:3},
-  {title:"There is a snake", start:63, end:107, page:4},
-  {title:"In my drink", start:108, end:161, page:5},
-  {title:"The little squirrel", start:162, end:213, page:6},
-  {title:"Said the sheep", start:214, end:256, page:7},
-  {title:"Exercise *", start:257, end:324, page:8},
-  {title:"A huge elephant", start:325, end:371, page:9},
-  {title:"Once a dirty fly", start:372, end:420, page:10},
-  {title:"This is a big cat", start:421, end:473, page:11},
-  {title:"The cute kangaroo", start:474, end:525, page:12},
-  {title:"Look at the geese", start:526, end:577, page:13},
-  {title:"Exercise **", start:578, end:631, page:14},
-  {title:"The heavy bear", start:632, end:687, page:15},
-  {title:"The beautiful bird", start:688, end:737, page:16},
-  {title:"The frog thought", start:739, end:782, page:17},
-  {title:"The naughty monkey", start:783, end:828, page:18},
-  {title:"Though it's hot", start:829, end:879, page:19},
-  {title:"Exercise ***", start:880, end:936, page:20}
+  {title:"Jump to French", start:0, end:12, page:"cover"},
+  {title:"On the traffic light", start:13, end:49, page:3},
+  {title:"Travel to the north", start:50, end:91, page:4},
+  {title:"An accident happened", start:92, end:137, page:5},
+  {title:"Monday", start:138, end:193, page:6},
+  {title:"Thursday", start:194, end:240, page:7},
+  {title:"Exercise *", start:241, end:311, page:8},
+  {title:"Once a man", start:313, end:367, page:9},
+  {title:"I'm listening", start:369, end:401, page:10},
+  {title:"You are very Intelligent", start:402, end:435, page:11},
+  {title:"Water comes from", start:436, end:476, page:12},
+  {title:"The dress is expensive", start:477, end:525, page:13},
+  {title:"Exercise **", start:526, end:581, page:14},
+  {title:"I'm reading in English", start:582, end:630, page:15},
+  {title:"You are so funny", start:631, end:662, page:16},
+  {title:"You should follow", start:663, end:707, page:17},
+  {title:"English my mother language", start:708, end:751, page:18},
+  {title:"Very soon", start:752, end:785, page:19},
+  {title:"Exercise ***", start:786, end:850, page:20},
 ];
 
 const extraPages = [
@@ -1033,7 +1001,7 @@ const extraPages = [
   {title:"Page 21", page:21},
   {title:"Page 22", page:22},
   {title:"Page 23", page:23},
-  {title:"Page 24", page:24}
+  {title:"Page 24", page:24},
 ];
 
 let currentChapterIndex = 0;

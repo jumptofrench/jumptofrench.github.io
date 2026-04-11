@@ -1,22 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" href="book2.ico">
+  <link rel="icon" href="book3.ico">
 <script>
 (function () {
   const ok =
-    localStorage.getItem("jtf_book2_audio") === "yes" ||
-    localStorage.getItem("jtf_book2_both") === "yes";
+    localStorage.getItem("jtf_book3_audio") === "yes" ||
+    localStorage.getItem("jtf_book3_both") === "yes";
+  if (!ok) window.location.replace("/index.html");
+})();
+</script>
+
+<script>
+(function () {
+  const ok =
+    localStorage.getItem("jtf_book3_audio") === "yes" ||
+    localStorage.getItem("jtf_book3_both") === "yes";
 
   if (!ok) {
     window.location.replace("/index.html");
   }
 })();
 </script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jump to French — Book 2 (Audio)</title>
+<title>Jump to French — Book 3 (Audio)</title>
 <style>
 * { box-sizing: border-box; }
 
@@ -26,15 +34,9 @@
   --divider: 10px;
 }
 
-html {
-  margin: 0;
-  height: 100%;
-  height: -webkit-fill-available;
-}
-
 html, body {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
   font-family: Arial, Helvetica, sans-serif;
   background: #e7e7e7;
   color: #111;
@@ -43,9 +45,6 @@ html, body {
 }
 
 body {
-  min-height: 100vh;
-  min-height: 100dvh;
-  min-height: -webkit-fill-available;
   overflow: auto;
   display: flex;
   justify-content: center;
@@ -745,23 +744,16 @@ body.dark-mode .volume::-moz-range-thumb {
 
 /* PHONE */
 @media (max-width: 760px) {
-  html,
   body {
-    height: auto;
-    min-height: 100%;
-  }
-
-  body {
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: auto;
     display: block;
   }
 
   .app {
-    align-items: stretch;
+  align-items: stretch;
     grid-template-columns: 1fr;
     height: auto;
-    min-height: 100dvh;
+    min-height: 100vh;
     width: 100%;
     max-width: none;
   }
@@ -772,27 +764,29 @@ body.dark-mode .volume::-moz-range-thumb {
 
   .left,
   .chapter-column {
-    height: auto;
-    min-height: unset;
-    overflow: visible;
-    display: block;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
     border-right: none;
     border-bottom: 1px solid #d0d0d0;
   }
 
-  .left {
-    padding: 14px 14px calc(22px + env(safe-area-inset-bottom));
-  }
-
   .chapter-column {
-    padding: 12px 10px calc(22px + env(safe-area-inset-bottom));
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+    padding-top: 12px;
+    height: auto;
   }
 
   .chapters-scroll {
-    flex: unset;
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 12px;
+  padding-bottom: 10px;
     overflow: visible;
-    padding-bottom: 0;
-    min-height: unset;
     height: auto;
     display: block;
   }
@@ -812,23 +806,8 @@ body.dark-mode .volume::-moz-range-thumb {
     max-height: none;
   }
 
-  .player {
-    overflow: visible;
-  }
-
-  .volume-row {
-    grid-template-columns: 60px 1fr;
-    align-items: center;
-  }
-
-  .seek,
-  .volume {
-    width: 100%;
-    min-width: 0;
-  }
-
   .main {
-    min-height: 55dvh;
+    min-height: 55vh;
   }
 
   .page-stage {
@@ -910,8 +889,8 @@ body.dark-mode .volume::-moz-range-thumb {
         <img src="cover.png" class="cover" alt="Book cover">
       </div>
       <div>
-        <div class="title">Jump to French - Book 2</div>
-        <div class="sub">Animals</div>
+        <div class="title">Jump to French - Book 3</div>
+        <div class="sub">Having Fun</div>
       </div>
     </div>
 
@@ -1005,36 +984,9 @@ body.dark-mode .volume::-moz-range-thumb {
 <script>
 const TOTAL_PAGES = 24;
 
-const chapters = [
-  {title:"Jump to French", start:0, end:14, page:"cover"},
-  {title:"The big whale", start:15, end:61, page:3},
-  {title:"There is a snake", start:63, end:107, page:4},
-  {title:"In my drink", start:108, end:161, page:5},
-  {title:"The little squirrel", start:162, end:213, page:6},
-  {title:"Said the sheep", start:214, end:256, page:7},
-  {title:"Exercise *", start:257, end:324, page:8},
-  {title:"A huge elephant", start:325, end:371, page:9},
-  {title:"Once a dirty fly", start:372, end:420, page:10},
-  {title:"This is a big cat", start:421, end:473, page:11},
-  {title:"The cute kangaroo", start:474, end:525, page:12},
-  {title:"Look at the geese", start:526, end:577, page:13},
-  {title:"Exercise **", start:578, end:631, page:14},
-  {title:"The heavy bear", start:632, end:687, page:15},
-  {title:"The beautiful bird", start:688, end:737, page:16},
-  {title:"The frog thought", start:739, end:782, page:17},
-  {title:"The naughty monkey", start:783, end:828, page:18},
-  {title:"Though it's hot", start:829, end:879, page:19},
-  {title:"Exercise ***", start:880, end:936, page:20}
-];
+const chapters = [{"title":"Jump to French","start":0,"end":13,"page":"cover"},{"title":"We'll go by car","start":14,"end":56,"page":3},{"title":"Thanks to my","start":57,"end":98,"page":4},{"title":"Thank you for what's here","start":99,"end":143,"page":5},{"title":"Walking on the sand","start":144,"end":181,"page":6},{"title":"You can go by truck","start":182,"end":225,"page":7},{"title":"Exercise *","start":226,"end":280,"page":8},{"title":"You can touch","start":281,"end":316,"page":9},{"title":"You can see","start":317,"end":367,"page":10},{"title":"I'd like","start":368,"end":410,"page":11},{"title":"What do you prefer","start":411,"end":449,"page":12},{"title":"I go sailing","start":450,"end":490,"page":13},{"title":"Exercise **","start":491,"end":547,"page":14},{"title":"When you are troubled","start":548,"end":595,"page":15},{"title":"I had a big chance","start":596,"end":639,"page":16},{"title":"What's the best time","start":640,"end":688,"page":17},{"title":"Once in the winter","start":689,"end":738,"page":18},{"title":"In the summer","start":739,"end":786,"page":19},{"title":"Exercise ***","start":787,"end":853,"page":20}];
 
-const extraPages = [
-  {title:"Page 1", page:1},
-  {title:"Page 2", page:2},
-  {title:"Page 21", page:21},
-  {title:"Page 22", page:22},
-  {title:"Page 23", page:23},
-  {title:"Page 24", page:24}
-];
+const extraPages = [{"title":"Page 1","page":1},{"title":"Page 2","page":2},{"title":"Page 21","page":21},{"title":"Page 22","page":22},{"title":"Page 23","page":23},{"title":"Page 24","page":24}];
 
 let currentChapterIndex = 0;
 let isDragging = false;
