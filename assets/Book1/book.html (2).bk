@@ -104,7 +104,7 @@ button {
   height: 66px;
   border: 1px solid #d5d5d5;
   border-radius: 16px;
-  background: rgba(255,255,255,0.96);
+  background: rgba(255,255,255,0.4); backdrop-filter: blur(6px);
   font-size: 38px;
   line-height: 1;
   cursor: pointer;
@@ -114,7 +114,7 @@ button {
 }
 
 button:hover {
-  background: #ffffff;
+  background: rgba(255,255,255,0.6);
 }
 
 .left { left: 18px; }
@@ -123,7 +123,7 @@ button:hover {
 .page-label {
   position: absolute;
   top: 14px;
-  background: rgba(255,255,255,0.96);
+  background: rgba(255,255,255,0.4); backdrop-filter: blur(6px);
   padding: 10px 14px;
   border-radius: 999px;
   font-weight: 700;
